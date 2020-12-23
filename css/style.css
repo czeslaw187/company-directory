@@ -1,0 +1,22 @@
+body {
+    height: 100vh;
+    overflow: auto;
+}
+
+.container {
+    border: 2px solid black;
+    border-radius: 3px;
+}
+
+.modal-backdrop {
+    opacity: 0 !important;
+}
+
+input:disabled, textarea:disabled {
+    background-color: #ffff !important;
+    border: none !important;
+}
+
+label {
+    font-weight: bold;
+}
