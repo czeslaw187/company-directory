@@ -1,6 +1,7 @@
 body {
-    height: 100vh;
+    height: calc(100vh - 60px);
     overflow: auto;
+    width: 100vw;
 }
 
 .container {
@@ -20,3 +21,31 @@ input:disabled, textarea:disabled {
 label {
     font-weight: bold;
 }
+
+input#file-upload-button {
+    background-color: white;
+}
+
+#employeeForm .modal {
+    margin: 0 auto;
+}
+
+ #employeeForm .modal-dialog .modal-content {
+     width: 60vw;
+ }
+
+#employeeForm input::-webkit-input-placeholder {
+    color: red;
+}
+
+#error {
+    color: red;
+}
+
+ @media only screen and (max-width: 768px) {
+    #employeeForm .modal-dialog .modal-content {
+        width: 100vw;
+    }
+ }
+
+
