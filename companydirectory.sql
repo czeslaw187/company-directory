@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2020 at 09:56 AM
+-- Generation Time: Dec 29, 2020 at 10:58 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `companydirectory`
 --
+CREATE DATABASE IF NOT EXISTS `companydirectory` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `companydirectory`;
 
 -- --------------------------------------------------------
 
