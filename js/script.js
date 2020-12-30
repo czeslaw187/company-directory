@@ -185,23 +185,23 @@ $.ajax({
 
         
         // search by name
-
+      
         $(`#nameInput`).on('keyup', (e)=> {
             e.preventDefault()
             let name = $('#nameInput').val().split(' ')
-            if (!name[1]) {
-                for (let i = 0; i < result.length; i++) {
-                    if (result[i]['email'] === name[0]) {
-                        $(`#person${i}`).get(0).scrollIntoView()
-                        break
-                    } 
-                }
-            } else {
-                for (let i = 0; i < result.length; i++) {
-                    if (result[i]['firstName'] === name[0] && result[i]['lastName'] === name[1]) {
+            if (name[1]) {
+                for (let i = 0; i < response['data'].length; i++) {
+                    if (response['data'][i]['firstName'].toLowerCase() === name[0] && response['data'][i]['lastName'].toLowerCase() === name[1]) {
                         $(`#person${i}`).get(0).scrollIntoView()
                         break
                     }
+                }
+            } else {
+                for (let i = 0; i < response['data'].length; i++) {
+                    if (response['data'][i]['email'].toLowerCase() === name[0].toLowerCase()) {
+                        $(`#person${i}`).get(0).scrollIntoView()
+                        break
+                    } 
                 }
             }   
         })
@@ -306,25 +306,25 @@ $.ajax({
 
         for (let i = 0; i < response['data'].length; i++) {
             $(`#person${i} #saveCredentials`).on('click', ()=> {
-            const title = $('#title').val(),
+            const title = $(`#person${i} #title`).val(),
                   id = response['data'][i]['id'],  
-                  firstName = $('#firstName').val(),
-                  lastName = $('#lastName').val(),
-                  dob = $('#dob').val(),
-                  address1 = $('#address1').val(),
-                  address2 = $('#address2').val(),
-                  postCode = $('#postCode').val(),
-                  city = $('#city').val(),
-                  email = $('#email').val(),
-                  phone = $('#phone').val(),
-                  position = $('#position').val(),
-                  department = $('#department').val(),
-                  hod = $('#hod').val(),
-                  salary = $('#salary').val(),
-                  startDate = $('#startDate').val(),
-                  endDate = $('#endOfEmployment').val(),
-                  location = $('#location').val(),
-                  workHistory = $('#workHistory').val();
+                  firstName = $(`#person${i} #firstName`).val(),
+                  lastName = $(`#person${i} #lastName`).val(),
+                  dob = $(`#person${i} #dob`).val(),
+                  address1 = $(`#person${i} #address1`).val(),
+                  address2 = $(`#person${i} #address2`).val(),
+                  postCode = $(`#person${i} #postCode`).val(),
+                  city = $(`#person${i} #city`).val(),
+                  email = $(`#person${i} #email`).val(),
+                  phone = $(`#person${i} #phone`).val(),
+                  position = $(`#person${i} #position`).val(),
+                  department = $(`#person${i} #department`).val(),
+                  hod = $(`#person${i} #hod`).val(),
+                  salary = $(`#person${i} #salary`).val(),
+                  startDate = $(`#person${i} #startDate`).val(),
+                  endDate = $(`#person${i} #endOfEmployment`).val(),
+                  location = $(`#person${i} #location`).val(),
+                  workHistory = $(`#person${i} #workHistory`).val();
                   $.ajax({
                     url: 'php/updateRecord.php',
                     method: 'post',
@@ -353,6 +353,9 @@ $.ajax({
                     success: response=> {
                         if (response['status']['name'] == 'ok') {
                             alert('Record updated')
+                            $(`#person${i} input[type="text"], #person${i} select, #person${i} textarea`).prop('disabled', true)
+                            $(`#person${i} #cancelSave`).hide()
+                            $(`#person${i} #saveCredentials`).hide()
                         } else {
                             alert(`Server Error`)
                         }

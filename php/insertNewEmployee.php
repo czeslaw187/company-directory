@@ -43,9 +43,10 @@ $hod = $_POST['hod'];
 $salary = $_POST['salary'];
 $startDate = $_POST['startDate'];
 $endDate = $_POST['endDate'];
+$myLocation = $_POST['location'];
 $workHistory = $_POST['workHistory'];
 
-$query = "INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID, title, dob, address_1, address_2, post_code, city, phone, hod, salary, start_date, end_date, work_history) VALUES ('$firstName', '$lastName', '$jobTitle', '$email', '$department', '$title', '$dob', '$address1', '$address2', '$postCode', '$city', '$phone', '$hod', '$salary', '$startDate', '$endDate', '$workHistory')";
+$query = "INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID, title, dob, address_1, address_2, post_code, city, phone, hod, salary, hire_date, end_date, myLocation, work_history) VALUES ('$firstName', '$lastName', '$jobTitle', '$email', '$department', '$title', '$dob', '$address1', '$address2', '$postCode', '$city', '$phone', '$hod', '$salary', '$startDate', '$endDate', '$myLocation', '$workHistory')";
 
 $result = $conn->query($query);
 	
