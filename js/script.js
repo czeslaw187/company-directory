@@ -220,7 +220,7 @@ $.ajax({
                     for (let i = 0; i < departments['data'].length; i++) {
                         options.push(`<option value="${departments['data'][i]['id']}">${departments['data'][i]['name']}</option>`)
                     }        
-                    for (let i = 0; i < result.length; i++) {
+                    for (let i = 0; i < response['data'].length; i++) {
                         $(`#person${i} #department`).html(`${options}`)
                     }
                     $('#employeeForm #departmentNew').html(`${options}`)                               
