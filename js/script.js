@@ -12,7 +12,7 @@ $.ajax({
     dataType: 'json',
     success: response => {        
         for (let i = 0; i < response['data'].length; i++) {
-            result.push(response['data'][i])
+            
             rows +=
                 `<div class="container m-2" id="person${i}">
                     <div class="row">
@@ -30,7 +30,7 @@ $.ajax({
                             <p class="my-0">${response['data'][i]['location']}</p>
                         </div>
                         <div class="col-sm-1">
-                            <button type="button" data-toggle="collapse" data-target="#dropdown${i}" class="btn"><span><i class="fa fa-sort-desc"></i></span></button>
+                            <button type="button" data-toggle="collapse" data-target="#dropdown${i}" class="btn"><span><i class="fa fa-sort-desc fa-3x"></i></span></button>
                         </div>
                     </div>
                     <div class="row collapse" id="dropdown${i}">
@@ -109,7 +109,7 @@ $.ajax({
                                 </li>
                                 <li class="list-group-item">
                                     <label for="startDate" class="mr-2">Start Date</label>
-                                    <input type="text" name="startDate" id="startDate" class="form-control" value="${response['data'][i]['start_date'] ? response['data'][i]['start_date'] : ''}"/>
+                                    <input type="text" name="startDate" id="startDate" class="form-control" value="${response['data'][i]['hire_date'] ? response['data'][i]['hire_date'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="endOfEmployment" class="mr-2">End of Employment</label>
@@ -141,7 +141,7 @@ $.ajax({
                                 <span>
                                     <i class="fa fa-trash-o"></i>
                                 </span>
-                             </button>                           
+                            </button>                           
                             <div id="removeRecord${i}" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -164,28 +164,27 @@ $.ajax({
         `);
 
         // enable editing data
-
         for (let i = 0; i < response['data'].length; i++) {
             $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
             $(`#person${i} #cancelSave`).hide()
             $(`#person${i} #saveCredentials`).hide()
             $(`#person${i} #enableFields`).click(()=> {
-                $(`#person${i} input[type="text"], #person${i} select, #person${i} textarea`).prop('disabled', false)
+                $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', false)
                 $(`#person${i} #cancelSave`).show()
                 $(`#person${i} #saveCredentials`).show()
                 getDepartments()
             })
             $(`#person${i} #cancelSave`).click(()=> {
-                $(`#person${i} input[type="text"], #person${i} select, #person${i} textarea`).prop('disabled', true)
+                $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
                 $(`#person${i} #cancelSave`).hide()
                 $(`#person${i} #saveCredentials`).hide()
                 $(`#person${i} #department`).html(`<option value="${response['data'][i]['departmentID']}">${response['data'][i]['department']}</option>`)
             })
         }
 
-        
+
         // search by name
-      
+
         $(`#nameInput`).on('keyup', (e)=> {
             e.preventDefault()
             let name = $('#nameInput').val().split(' ')
@@ -208,7 +207,7 @@ $.ajax({
         // employee counter
 
         $('#count').append(` ${response['data'].length}`)
-        
+
         //get departments
 
         const getDepartments = () => {
@@ -228,33 +227,34 @@ $.ajax({
                 }
             })
         }
-        
+
         $('#addEmployeeBtn').on('click', ()=> {
             getDepartments()
         })
+
         //submit new employee
 
         $('#submitNewEmployee').on('click', ()=> {
             const title = $('#titleNew').val(),
-                  firstName = $('#firstNameNew').val(),
-                  lastName = $('#lastNameNew').val(),
-                  dob = $('#dobNew').val(),
-                  address1 = $('#address1New').val(),
-                  address2 = $('#address2New').val(),
-                  postCode = $('#postCodeNew').val(),
-                  city = $('#cityNew').val(),
-                  email = $('#emailNew').val(),
-                  phone = $('#phoneNew').val(),
-                  position = $('#positionNew').val(),
-                  department = $('#departmentNew').val(),
-                  hod = $('#hodNew').val(),
-                  salary = $('#salaryNew').val(),
-                  startDate = $('#startDateNew').val(),
-                  endDate = $('#endOfEmploymentNew').val(),
-                  location = $('#locationNew').val(),
-                  workHistory = $('#workHistoryNew').val();    
+                firstName = $('#firstNameNew').val(),
+                lastName = $('#lastNameNew').val(),
+                dob = $('#dobNew').val(),
+                address1 = $('#address1New').val(),
+                address2 = $('#address2New').val(),
+                postCode = $('#postCodeNew').val(),
+                city = $('#cityNew').val(),
+                email = $('#emailNew').val(),
+                phone = $('#phoneNew').val(),
+                position = $('#positionNew').val(),
+                department = $('#departmentNew').val(),
+                hod = $('#hodNew').val(),
+                salary = $('#salaryNew').val(),
+                startDate = $('#startDateNew').val(),
+                endDate = $('#endOfEmploymentNew').val(),
+                location = $('#locationNew').val(),
+                workHistory = $('#workHistoryNew').val();    
             if (!firstName) {
-               alert('Enter first name')
+            alert('Enter first name')
             } else if (!lastName) {
                 alert('Enter last name')
             } else if (!email) {              
@@ -292,8 +292,8 @@ $.ajax({
                     dataType: 'json',
                     success: response=> {
                         if (response['status']['name'] == 'ok') {
-                            alert('Record created')
-                            window.location.reload(true)                            
+                            alert('Record created')     
+                            window.location.reload(true)                    
                         } else {
                             alert(`Server Error`)
                         }
@@ -301,31 +301,32 @@ $.ajax({
                 })
             }
         })
-        
+
         // update record
 
         for (let i = 0; i < response['data'].length; i++) {
             $(`#person${i} #saveCredentials`).on('click', ()=> {
+                console.log(response['data'][i]['id'])
             const title = $(`#person${i} #title`).val(),
-                  id = response['data'][i]['id'],  
-                  firstName = $(`#person${i} #firstName`).val(),
-                  lastName = $(`#person${i} #lastName`).val(),
-                  dob = $(`#person${i} #dob`).val(),
-                  address1 = $(`#person${i} #address1`).val(),
-                  address2 = $(`#person${i} #address2`).val(),
-                  postCode = $(`#person${i} #postCode`).val(),
-                  city = $(`#person${i} #city`).val(),
-                  email = $(`#person${i} #email`).val(),
-                  phone = $(`#person${i} #phone`).val(),
-                  position = $(`#person${i} #position`).val(),
-                  department = $(`#person${i} #department`).val(),
-                  hod = $(`#person${i} #hod`).val(),
-                  salary = $(`#person${i} #salary`).val(),
-                  startDate = $(`#person${i} #startDate`).val(),
-                  endDate = $(`#person${i} #endOfEmployment`).val(),
-                  location = $(`#person${i} #location`).val(),
-                  workHistory = $(`#person${i} #workHistory`).val();
-                  $.ajax({
+                id = response['data'][i]['id'],  
+                firstName = $(`#person${i} #firstName`).val(),
+                lastName = $(`#person${i} #lastName`).val(),
+                dob = $(`#person${i} #dob`).val(),
+                address1 = $(`#person${i} #address1`).val(),
+                address2 = $(`#person${i} #address2`).val(),
+                postCode = $(`#person${i} #postCode`).val(),
+                city = $(`#person${i} #city`).val(),
+                email = $(`#person${i} #email`).val(),
+                phone = $(`#person${i} #phone`).val(),
+                position = $(`#person${i} #position`).val(),
+                department = $(`#person${i} #department`).val(),
+                hod = $(`#person${i} #hod`).val(),
+                salary = $(`#person${i} #salary`).val(),
+                startDate = $(`#person${i} #startDate`).val(),
+                endDate = $(`#person${i} #endOfEmployment`).val(),
+                location = $(`#person${i} #location`).val(),
+                workHistory = $(`#person${i} #workHistory`).val();
+                $.ajax({
                     url: 'php/updateRecord.php',
                     method: 'post',
                     data: {
@@ -353,9 +354,10 @@ $.ajax({
                     success: response=> {
                         if (response['status']['name'] == 'ok') {
                             alert('Record updated')
-                            $(`#person${i} input[type="text"], #person${i} select, #person${i} textarea`).prop('disabled', true)
+                            $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
                             $(`#person${i} #cancelSave`).hide()
                             $(`#person${i} #saveCredentials`).hide()
+                            
                         } else {
                             alert(`Server Error`)
                         }
@@ -365,7 +367,7 @@ $.ajax({
         }
 
         // delete record
-        
+
         for (let i = 0; i < response['data'].length; i++) {
             $(`#person${i} #deleteRecord`).on('click', ()=> {
                 const endDate = $(`#person${i} #endOfEmployment`).val()
@@ -391,7 +393,7 @@ $.ajax({
                 }      
             })
         }
-    }
-})
 
+    }   
+})
 
