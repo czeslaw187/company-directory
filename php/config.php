@@ -1,10 +1,10 @@
 <?php
 
-	$cd_host = "127.0.0.1";
+	$cd_host = "eu-cdbr-west-03.cleardb.net";
 	$cd_port = 3306;
 	$cd_socket = "";
-	$cd_user = "root"; // user name
-	$cd_password = "21071988"; // password
-	$cd_dbname = "companydirectory"; // database name
+	$cd_user = "b0a3de7d091185"; // user name
+	$cd_password = "3b38c846"; // password
+	$cd_dbname = "heroku_68fc81e0eba0064"; // database name
 
 ?>
