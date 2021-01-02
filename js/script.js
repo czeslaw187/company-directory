@@ -10,14 +10,14 @@ $.ajax({
     url: 'php/getAll.php',
     type: 'get',
     dataType: 'json',
-    success: response => {        
-        for (let i = 0; i < response['data'].length; i++) {
-            
+    success: response => {    
+        
+        for (let i = 0; i < response['data'].length; i++) { 
             rows +=
                 `<div class="container m-2" id="person${i}">
                     <div class="row">
                         <div class="col-sm-1 p-0">
-                            <img src="" alt="" class="img d-block" />
+                            <img src="" alt="" class="img d-block" id="img"/>
                         </div>
                         <div class="col-sm-6">
                             <h4>${response['data'][i]['firstName']} ${response['data'][i]['lastName']}</h4>
@@ -83,7 +83,12 @@ $.ajax({
                                     <input type="number" name="phone" id="phone" class="form-control" value="${response['data'][i]['phone'] ? response['data'][i]['phone'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
-                                    <span class="mr-2">Picture</span>
+                                    <form method="post" action="" enctype="multipart/form-data" id="myform">
+                                        <div >
+                                            <input type="file" id="file" name="file" />
+                                            <input type="button" class="button" value="Upload" id="but_upload">
+                                        </div>
+                                    </form>
                                 </li>
                             </ul>
                         </div>
@@ -117,7 +122,9 @@ $.ajax({
                                 </li>
                                 <li class="list-group-item">
                                     <label for="location" class="mr-2">Location</label>
-                                    <input type="text" name="location" id="location" class="form-control" value="${response['data'][i]['location'] ? response['data'][i]['location'] : ''}"/>
+                                    <select name="location" id="location" class="form-control">
+                                        <option value="${response['data'][i]['locationID'] ? response['data'][i]['locationID'] : ''}">${response['data'][i]['location'] ? response['data'][i]['location'] : ''}</option>
+                                    </select>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="workHistory" class="mr-2">Work History</label>
@@ -158,11 +165,11 @@ $.ajax({
                     </div> 
                 </div>`
         }
-        
+    
         $('#main').html(`
             ${rows}
         `);
-
+        console.log(response['data'])
         // enable editing data
         for (let i = 0; i < response['data'].length; i++) {
             $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
@@ -173,6 +180,7 @@ $.ajax({
                 $(`#person${i} #cancelSave`).show()
                 $(`#person${i} #saveCredentials`).show()
                 getDepartments()
+                getLocations()
             })
             $(`#person${i} #cancelSave`).click(()=> {
                 $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
@@ -228,8 +236,28 @@ $.ajax({
             })
         }
 
+        const getLocations = () => {
+            $.ajax({
+                url: 'php/getAllLocations.php',
+                type: 'get',
+                dataType: 'json',
+                success: locations => {
+                    let options = []
+                    for (let i = 0; i < locations['data'].length; i++) {
+                        console.log(locations['data'][i])
+                        options.push(`<option value="${locations['data'][i]['id']}">${locations['data'][i]['name']}</option>`)
+                    }
+                    for (let i = 0; i < response['data'].length; i++) {
+                        $(`#person${i} #location`).html(`${options}`)
+                    }
+                    $(`#employeeForm #locationNew`).html(`${options}`)
+                }
+            })
+        }
+
         $('#addEmployeeBtn').on('click', ()=> {
             getDepartments()
+            getLocations()
         })
 
         //submit new employee
@@ -357,7 +385,7 @@ $.ajax({
                             $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
                             $(`#person${i} #cancelSave`).hide()
                             $(`#person${i} #saveCredentials`).hide()
-                            
+                            window.location.reload()
                         } else {
                             alert(`Server Error`)
                         }
@@ -394,6 +422,39 @@ $.ajax({
             })
         }
 
-    }   
+        // file upload
+        for (let i = 0; i < response['data'].length; i++) {
+            $(`#person${i} #but_upload`).on('click', ()=>{
+
+                var fd = new FormData();
+                var files = $(`#person${i} #file`)[0].files;
+                
+                // Check file selected or not
+                if(files.length > 0 ){
+                   fd.append('file',files[0]);
+        
+                   $.ajax({
+                      url: 'php/upload.php',
+                      type: 'post',
+                      data: fd,
+                      contentType: false,
+                      processData: false,
+                      success: respond => {
+                         if(respond != 0){
+                            $(`#person${i} #img`).attr("src",respond); 
+                            $(`#person${i} img`).show(); // Display image element
+                         }else{
+                            alert('file not uploaded');
+                         }
+                      },
+                   });
+                }else{
+                   alert("Please select a file.");
+                }
+            });
+        }
+
+    }    
+       
 })
 

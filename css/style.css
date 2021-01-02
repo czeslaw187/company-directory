@@ -42,6 +42,10 @@ input#file-upload-button {
     color: red;
 }
 
+#img {
+    background-size: contain;
+}
+
  @media only screen and (max-width: 768px) {
     #employeeForm .modal-dialog .modal-content {
         width: 100vw;

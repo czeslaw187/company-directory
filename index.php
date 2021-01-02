@@ -144,7 +144,9 @@
                             </li>
                             <li class="list-group-item">
                                 <label for="locationNew">Location</label>
-                                <input type="text" name="locationNew" id="locationNew" class="form-control">
+                                <select type="text" name="locationNew" id="locationNew" class="form-control">
+
+                                </select>
                             </li>
                             <li class="list-group-item">
                                 <label for="workHistoryNew">Work History</label>
