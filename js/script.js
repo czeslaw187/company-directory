@@ -122,9 +122,7 @@ $.ajax({
                                 </li>
                                 <li class="list-group-item">
                                     <label for="location" class="mr-2">Location</label>
-                                    <select name="location" id="location" class="form-control">
-                                        <option value="${response['data'][i]['locationID'] ? response['data'][i]['locationID'] : ''}">${response['data'][i]['location'] ? response['data'][i]['location'] : ''}</option>
-                                    </select>
+                                    <p id="location" name="location">${response['data'][i]['location'] ? response['data'][i]['location'] : ''}</p>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="workHistory" class="mr-2">Work History</label>
@@ -180,7 +178,6 @@ $.ajax({
                 $(`#person${i} #cancelSave`).show()
                 $(`#person${i} #saveCredentials`).show()
                 getDepartments()
-                getLocations()
             })
             $(`#person${i} #cancelSave`).click(()=> {
                 $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
@@ -236,28 +233,8 @@ $.ajax({
             })
         }
 
-        const getLocations = () => {
-            $.ajax({
-                url: 'php/getAllLocations.php',
-                type: 'get',
-                dataType: 'json',
-                success: locations => {
-                    let options = []
-                    for (let i = 0; i < locations['data'].length; i++) {
-                        console.log(locations['data'][i])
-                        options.push(`<option value="${locations['data'][i]['id']}">${locations['data'][i]['name']}</option>`)
-                    }
-                    for (let i = 0; i < response['data'].length; i++) {
-                        $(`#person${i} #location`).html(`${options}`)
-                    }
-                    $(`#employeeForm #locationNew`).html(`${options}`)
-                }
-            })
-        }
-
         $('#addEmployeeBtn').on('click', ()=> {
             getDepartments()
-            getLocations()
         })
 
         //submit new employee
@@ -279,7 +256,6 @@ $.ajax({
                 salary = $('#salaryNew').val(),
                 startDate = $('#startDateNew').val(),
                 endDate = $('#endOfEmploymentNew').val(),
-                location = $('#locationNew').val(),
                 workHistory = $('#workHistoryNew').val();    
             if (!firstName) {
             alert('Enter first name')
@@ -287,8 +263,6 @@ $.ajax({
                 alert('Enter last name')
             } else if (!email) {              
                 alert('Enter a valid email')
-            } else if (!location) {
-                alert('Enter location')
             } else if (!dob) {
                 alert('Enter valid date of birth')            
             } else if (!department) {
@@ -314,7 +288,6 @@ $.ajax({
                         salary: salary,
                         startDate: startDate,
                         endDate: endDate,
-                        location: location,
                         workHistory: workHistory
                     },
                     dataType: 'json',
@@ -352,7 +325,6 @@ $.ajax({
                 salary = $(`#person${i} #salary`).val(),
                 startDate = $(`#person${i} #startDate`).val(),
                 endDate = $(`#person${i} #endOfEmployment`).val(),
-                location = $(`#person${i} #location`).val(),
                 workHistory = $(`#person${i} #workHistory`).val();
                 $.ajax({
                     url: 'php/updateRecord.php',
@@ -375,7 +347,6 @@ $.ajax({
                         salary: salary,
                         startDate: startDate,
                         endDate: endDate,
-                        location: location,
                         workHistory: workHistory
                     },
                     dataType: 'json',

@@ -44,12 +44,9 @@ $hod = $_POST['hod'];
 $salary = $_POST['salary'];
 $startDate = $_POST['startDate'];
 $endDate = $_POST['endDate'];
-$myLocation = $_POST['location'];
 $workHistory = $_POST['workHistory'];
 
-$query = "UPDATE personnel, department, location
-          LEFT JOIN department d ON d.id = '$department'
-          LEFT JOIN location l ON l.id = '$myLocation'
+$query = "UPDATE personnel
           SET personnel.firstName = '$firstName',
               personnel.lastName = '$lastName',
               personnel.jobTitle = '$jobTitle',
@@ -66,8 +63,7 @@ $query = "UPDATE personnel, department, location
               personnel.salary = '$salary',
               personnel.hire_date = '$startDate',
               personnel.end_date = '$endDate',              
-              personnel.work_history = '$workHistory',
-              d.locationID = '$myLocation'         
+              personnel.work_history = '$workHistory'        
           WHERE personnel.id = '$id'";
 $result = $conn->query($query);
 	

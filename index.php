@@ -143,12 +143,6 @@
                                 <input type="text" name="endOfEmploymentNew" id="endOfEmploymentNew" class="form-control">
                             </li>
                             <li class="list-group-item">
-                                <label for="locationNew">Location</label>
-                                <select type="text" name="locationNew" id="locationNew" class="form-control">
-
-                                </select>
-                            </li>
-                            <li class="list-group-item">
                                 <label for="workHistoryNew">Work History</label>
                                 <textarea type="text" name="workHistoryNew" id="workHistoryNew" class="form-control"></textarea>
                             </li>

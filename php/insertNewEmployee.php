@@ -43,7 +43,6 @@ $hod = $_POST['hod'];
 $salary = $_POST['salary'];
 $startDate = $_POST['startDate'];
 $endDate = $_POST['endDate'];
-$myLocation = $_POST['location'];
 $workHistory = $_POST['workHistory'];
 
 $query = "INSERT INTO personnel (
@@ -69,8 +68,8 @@ $query = "INSERT INTO personnel (
 		'$lastName', 
 		'$jobTitle', 
 		'$email', 
-		(SELECT d.id FROM department d LEFT JOIN location l ON d.locationID = '$myLocation' WHERE d.id = '$department'), 
-		'$title', 
+		(SELECT d.id FROM department d LEFT JOIN location l ON l.id = d.locationID WHERE d.id = '$department'),
+		'$title',
 		'$dob', 
 		'$address1', 
 		'$address2', 
