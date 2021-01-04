@@ -166,8 +166,7 @@ $.ajax({
         
         for (let i = 0; i < response['data'].length; i++) { 
             let count = i
-            rows += getEmp(response, count)
-                
+            rows += getEmp(response, count)                
         }
     
         $('#main').html(`
@@ -299,8 +298,7 @@ $.ajax({
                     dataType: 'json',
                     success: newEmployee=> {
                         if (newEmployee['status']['name'] == 'ok') {
-                            alert('Record created')     
-                            window.location.reload()                   
+                            alert(`Record created`)                
                         } else {
                             alert(`Server Error`)
                         }
@@ -389,8 +387,7 @@ $.ajax({
                         success: deleted=> {
                             if (deleted) {
                                 alert('Record deleted') 
-                                $(`#person${i}`).hide()  
-                                return false                           
+                                window.location.reload()                           
                             } else {
                                 alert('Server Error')
                             }
