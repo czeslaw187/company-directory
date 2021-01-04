@@ -86,7 +86,7 @@ $query = "INSERT INTO personnel (
 $result = $conn->query($query);
 	
 	if (!$result) {
-
+		
 		$output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
 		$output['status']['description'] = mysqli_error($conn);	

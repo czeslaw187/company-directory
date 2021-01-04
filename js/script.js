@@ -2,38 +2,28 @@ $('#noButton').on('click', ()=> {
     $('#removeRecord').fadeOut()
 })
 
-// load all employees
-let rows = []
-let result = []
-
-$.ajax({
-    url: 'php/getAll.php',
-    type: 'get',
-    dataType: 'json',
-    success: response => {    
-        
-        for (let i = 0; i < response['data'].length; i++) { 
-            rows +=
-                `<div class="container m-2" id="person${i}">
+//single employee
+const getEmp = (object, index) => {
+   return `<div class="container m-2" id="person${index}">
                     <div class="row">
                         <div class="col-sm-1 p-0">
                             <img src="" alt="" class="img d-block" id="img"/>
                         </div>
                         <div class="col-sm-6">
-                            <h4>${response['data'][i]['firstName']} ${response['data'][i]['lastName']}</h4>
-                            <p>${response['data'][i]['email']}<p>
+                            <h4>${object['data'][index]['firstName']} ${object['data'][index]['lastName']}</h4>
+                            <p>${object['data'][index]['email']}<p>
                         </div>
                         <div class="col-sm-4">
                             <h6 class="mb-0">Department:</h6>
-                            <p class="mt-0">${response['data'][i]['department']}</p>
+                            <p class="mt-0">${object['data'][index]['department']}</p>
                             <h6 class="my-0">Location:</h6>
-                            <p class="my-0">${response['data'][i]['location']}</p>
+                            <p class="my-0">${object['data'][index]['location']}</p>
                         </div>
                         <div class="col-sm-1">
-                            <button type="button" data-toggle="collapse" data-target="#dropdown${i}" class="btn"><span><i class="fa fa-sort-desc fa-3x"></i></span></button>
+                            <button type="button" data-toggle="collapse" data-target="#dropdown${index}" class="btn"><span><i class="fa fa-sort-desc fa-3x"></i></span></button>
                         </div>
                     </div>
-                    <div class="row collapse" id="dropdown${i}">
+                    <div class="row collapse" id="dropdown${index}">
                         <div class="col-sm-6">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
@@ -48,39 +38,39 @@ $.ajax({
                                 </li>
                                 <li class="list-group-item">
                                     <label for="firstName" class="mr-2">First Name</label>
-                                    <input type="text" name="firstName" id="firstName" class="form-control" value="${response['data'][i]['firstName']}" />
+                                    <input type="text" name="firstName" id="firstName" class="form-control" value="${object['data'][index]['firstName']}" />
                                 </li>
                                 <li class="list-group-item">
                                     <label for="firstName" class="mr-2">Last Name</label>
-                                    <input type="text" name="lastName" id="lastName" class="form-control" value="${response['data'][i]['lastName']}"/>
+                                    <input type="text" name="lastName" id="lastName" class="form-control" value="${object['data'][index]['lastName']}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="dob" class="mr-2">Date of birth</label>
-                                    <input type="text" name="dob" id="dob" class="form-control" value="${response['data'][i]['dob'] ? response['data'][i]['dob'] : ''}"/>
+                                    <input type="text" name="dob" id="dob" class="form-control" value="${object['data'][index]['dob'] ? object['data'][index]['dob'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="firstName" class="mr-2">Address line 1</label>
-                                    <input type="text" name="address1" id="address1" class="form-control" value="${response['data'][i]['address_1'] ? response['data'][i]['address_1'] : ''}"/>
+                                    <input type="text" name="address1" id="address1" class="form-control" value="${object['data'][index]['address_1'] ? object['data'][index]['address_1'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="addresTwo" class="mr-2">Address line 2</label>
-                                    <input type="text" name="address2" id="address2" class="form-control" value="${response['data'][i]['address_2'] ? response['data'][i]['address_2'] : ''}"/>
+                                    <input type="text" name="address2" id="address2" class="form-control" value="${object['data'][index]['address_2'] ? object['data'][index]['address_2'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="postCode" class="mr-2">Post Code</label>
-                                    <input type="text" name="postCode" id="postCode" class="form-control" value="${response['data'][i]['post_code'] ? response['data'][i]['post_code'] : ''}"/>
+                                    <input type="text" name="postCode" id="postCode" class="form-control" value="${object['data'][index]['post_code'] ? object['data'][index]['post_code'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="city" class="mr-2">City</label>
-                                    <input type="text" name="city" id="city" class="form-control" value="${response['data'][i]['city'] ? response['data'][i]['city'] : ''}"/>
+                                    <input type="text" name="city" id="city" class="form-control" value="${object['data'][index]['city'] ? object['data'][index]['city'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="email" class="mr-2">Email</label>
-                                    <input type="text" name="email" id="email" class="form-control" value="${response['data'][i]['email'] ? response['data'][i]['email'] : ''}"/>
+                                    <input type="text" name="email" id="email" class="form-control" value="${object['data'][index]['email'] ? object['data'][index]['email'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="phone" class="mr-2">Phone</label>
-                                    <input type="number" name="phone" id="phone" class="form-control" value="${response['data'][i]['phone'] ? response['data'][i]['phone'] : ''}"/>
+                                    <input type="number" name="phone" id="phone" class="form-control" value="${object['data'][index]['phone'] ? object['data'][index]['phone'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <form method="post" action="" enctype="multipart/form-data" id="myform">
@@ -96,37 +86,37 @@ $.ajax({
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     <label for="position" class="mr-2">Position</label>
-                                    <input type="text" name="position" id="position" class="form-control" value="${response['data'][i]['jobTitle'] ? response['data'][i]['jobTitle'] : ''}"/>
+                                    <input type="text" name="position" id="position" class="form-control" value="${object['data'][index]['jobTitle'] ? object['data'][index]['jobTitle'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="department" class="mr-2">Department</label>
                                     <select name="department" id="department" class="form-control">
-                                    <option value="${response['data'][i]['departmentID']}">${response['data'][i]['department']}</option>
+                                    <option value="${object['data'][index]['departmentID']}">${object['data'][index]['department']}</option>
                                     </select>
                                 </li>   
                                 <li class="list-group-item">
                                     <label for="hod" class="mr-2">Head of Department</label>
-                                    <input type="text" name="hod" id="hod" class="form-control" value="${response['data'][i]['hod'] ? response['data'][i]['hod'] : ''}"/>
+                                    <input type="text" name="hod" id="hod" class="form-control" value="${object['data'][index]['hod'] ? object['data'][index]['hod'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="salary" class="mr-2">Salary</label>
-                                    <input type="text" name="salary" id="salary" class="form-control" value="${response['data'][i]['salary'] ? response['data'][i]['salary'] : ''}"/>
+                                    <input type="text" name="salary" id="salary" class="form-control" value="${object['data'][index]['salary'] ? object['data'][index]['salary'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="startDate" class="mr-2">Start Date</label>
-                                    <input type="text" name="startDate" id="startDate" class="form-control" value="${response['data'][i]['hire_date'] ? response['data'][i]['hire_date'] : ''}"/>
+                                    <input type="text" name="startDate" id="startDate" class="form-control" value="${object['data'][index]['hire_date'] ? object['data'][index]['hire_date'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="endOfEmployment" class="mr-2">End of Employment</label>
-                                    <input type="text" name="endOfEmployment" id="endOfEmployment" class="form-control" value="${response['data'][i]['end_date'] ? response['data'][i]['end_date'] : ''}"/>
+                                    <input type="text" name="endOfEmployment" id="endOfEmployment" class="form-control" value="${object['data'][index]['end_date'] ? object['data'][index]['end_date'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="location" class="mr-2">Location</label>
-                                    <p id="location" name="location">${response['data'][i]['location'] ? response['data'][i]['location'] : ''}</p>
+                                    <p id="location" name="location">${object['data'][index]['location'] ? object['data'][index]['location'] : ''}</p>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="workHistory" class="mr-2">Work History</label>
-                                    <textarea class="form-control" name="workHistory" id="workHistory">${response['data'][i]['work_history'] ? response['data'][i]['work_history'] : ''}</textarea>
+                                    <textarea class="form-control" name="workHistory" id="workHistory">${object['data'][index]['work_history'] ? object['data'][index]['work_history'] : ''}</textarea>
                                 </li>
                             </ul>
                             <div class="row">
@@ -142,12 +132,12 @@ $.ajax({
                                 <i class="fa fa-pencil-square-o"></i>
                             </span>
                             </button>
-                            <button type="button" class="btn" data-toggle="modal" data-target="#removeRecord${i}">
+                            <button type="button" class="btn" data-toggle="modal" data-target="#removeRecord${index}">
                                 <span>
                                     <i class="fa fa-trash-o"></i>
                                 </span>
                             </button>                           
-                            <div id="removeRecord${i}" class="modal fade" role="dialog">
+                            <div id="removeRecord${index}" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-body text-center">
@@ -162,6 +152,22 @@ $.ajax({
                         </div>
                     </div> 
                 </div>`
+}
+
+// load all employees
+let rows = []
+let result = []
+
+$.ajax({
+    url: 'php/getAll.php',
+    type: 'get',
+    dataType: 'json',
+    success: response => {    
+        
+        for (let i = 0; i < response['data'].length; i++) { 
+            let count = i
+            rows += getEmp(response, count)
+                
         }
     
         $('#main').html(`
@@ -291,10 +297,10 @@ $.ajax({
                         workHistory: workHistory
                     },
                     dataType: 'json',
-                    success: response=> {
-                        if (response['status']['name'] == 'ok') {
+                    success: newEmployee=> {
+                        if (newEmployee['status']['name'] == 'ok') {
                             alert('Record created')     
-                            window.location.reload(true)                    
+                            window.location.reload()                   
                         } else {
                             alert(`Server Error`)
                         }
@@ -383,7 +389,8 @@ $.ajax({
                         success: deleted=> {
                             if (deleted) {
                                 alert('Record deleted') 
-                                window.location.reload(true)                              
+                                $(`#person${i}`).hide()  
+                                return false                           
                             } else {
                                 alert('Server Error')
                             }
