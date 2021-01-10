@@ -572,6 +572,16 @@ $.ajax({
                             $(`#department${obj['id']} #cancelSubmitDep${obj['id']}`).hide()
                             $(`#department${obj['id']} input`).val('')
                         })
+                        // delete department
+                        $(`#department${obj['id']} #delDep`).on('click', ()=> {
+                            let ifNotZero = $(`#department${obj['id']} #memberCount`).html()
+                            if (ifNotZero > 0) {
+                                alert('Cannot delete department with active employees!')
+                                $(`#department${obj['id']} #deleteDepartment`).modal('hide')
+                            } else {
+                                // ajax call to deleteDepartmentById.php
+                            }
+                        })
                     })
 
                     // counting specific department memmbers
@@ -591,17 +601,6 @@ $.ajax({
             
         })
 
-        
-        // delete department
-        $(`#department${obj['id']} #delDep`).on('click', ()=> {
-            let ifNotZero = $(`#department${obj['id']} #memberCount`).html()
-            if (ifNotZero > 0) {
-                alert('Cannot delete department with active employees!')
-                $(`#department${obj['id']} #deleteDepartment`).modal('hide')
-            } else {
-                // ajax call to deleteDepartmentById.php
-            }
-        })
     }    
        
 })
