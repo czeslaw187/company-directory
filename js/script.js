@@ -676,7 +676,7 @@ $.ajax({
                                 howMany++
                             }
                         })
-                        $(`#department${depsCount['id']} #memberCount`).html(`${howMany}`)
+                        $(`#department${depsCount['id']} #memberCount${depsCount['id']}`).html(`${howMany}`)
                         howMany = 0
                     })
                 }

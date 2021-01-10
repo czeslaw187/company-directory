@@ -1,5 +1,5 @@
 <?php
-header('Location: /index.html');
+header('Location: /index.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
