@@ -14,7 +14,7 @@
 
 	header('Content-Type: application/json; charset=UTF-8');
 
-	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port);
+	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
 
 	if (mysqli_connect_errno()) {
 		
@@ -32,7 +32,7 @@
 
 	}	
 
-	$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, p.departmentID, p.title, p.dob, p.address_1, p.address_2, p.post_code, p.city, p.phone, p.hod, p.salary, p.hire_date, p.end_date, p.work_history, d.name as department, l.name as location, l.id as locationID FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) ORDER BY p.lastName, p.firstName, d.name, l.name';
+	$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, p.departmentID, p.title, p.dob, p.address_1, p.address_2, p.post_code, p.city, p.phone, p.salary, p.hire_date, p.end_date, p.work_history, p.imgUrl, d.hod as hod, d.name as department, l.name as location, l.id as locationID FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) ORDER BY p.lastName, p.firstName, d.name, l.name';
 
 	$result = $conn->query($query);
 	

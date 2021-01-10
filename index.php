@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Directory</title>
-    <link rel="stylesheet" href="./vendors/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./vendors/bootstrap-4.5.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./vendors/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -20,6 +20,7 @@
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control form-control-lg mr-sm-2" type="search" id="nameInput" placeholder="Search by name, email" aria-label="Search">
     </form>  
+    <span class="container border-0 bg-light" id="count">Employees</span>
     <div class="dropdown ml-auto mr-2">
         <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">
             Select
@@ -27,10 +28,10 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
             <li class="dropdown-item">
-                <a href="#" role="button" class="btn" id="addEmployeeBtn" data-toggle="modal" data-target="#employeeForm">Add employee</a>
+                <a href="#" role="button" class="btn" id="loadEmployees">Manage Employees</a>
             </li>
             <li class="dropdown-item">
-                <a href="#" role="button" class="btn" data-toggle="collapse" data-target="#depManagement">Manage Departments</a>
+                <a href="#" role="button" class="btn" id="onManage">Manage Departments</a>
             </li>
         </ul>    
     </div>
@@ -40,12 +41,7 @@
   
 
 <main id="main" class="container border-0 h-100 overflow-auto">
-<div class="container border-0 bg-light">
-
-
-
-<p id="count" class="pull-right mr-2 text-white">Employees</p>
-</div>
+   
 </main>
 
 <!-- New employee form -->
@@ -55,7 +51,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Add new employee</h4>
-                <span id="error"></span>
                 <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -127,10 +122,6 @@
                                 </select>    
                             </li>
                             <li class="list-group-item">
-                                <label for="hodNew">Head of Department</label>
-                                <input type="text" name="hodNew" id="hodNew" class="form-control">
-                            </li>
-                            <li class="list-group-item">
                                 <label for="salaryNew">Salary</label>
                                 <input type="number" name="salarynNew" id="salaryNew" class="form-control">
                             </li>
@@ -158,8 +149,13 @@
     </div>    
 </div>
 
+<!-- Department management modal-->
+
+
+
+
 <script src="./vendors/jquery/jquery-3.5.1.js"></script>
-<script src="./vendors/bootstrap/js/bootstrap.min.js"></script>    
+<script src="./vendors/bootstrap-4.5.3-dist/js/bootstrap.bundle.js"></script>    
 <script src="./js/script.js"></script>
 </body>
 </html>

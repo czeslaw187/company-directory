@@ -39,11 +39,11 @@ $address2 = $_POST['address2'];
 $postCode = $_POST['postCode'];
 $city = $_POST['city'];
 $phone = $_POST['phone'];
-$hod = $_POST['hod'];
 $salary = $_POST['salary'];
 $startDate = $_POST['startDate'];
 $endDate = $_POST['endDate'];
 $workHistory = $_POST['workHistory'];
+$imgUrl = '';
 
 $query = "INSERT INTO personnel (
 			firstName, 
@@ -57,12 +57,12 @@ $query = "INSERT INTO personnel (
 			address_2, 
 			post_code, 
 			city, 
-			phone, 
-			hod, 
+			phone,  
 			salary, 
 			hire_date, 
 			end_date,  
-			work_history	 
+			work_history,	
+			imgUrl 
 	) VALUES (
 		'$firstName', 
 		'$lastName', 
@@ -75,12 +75,12 @@ $query = "INSERT INTO personnel (
 		'$address2', 
 		'$postCode', 
 		'$city', 
-		'$phone', 
-		'$hod', 
+		'$phone',  
 		'$salary', 
 		'$startDate', 
 		'$endDate', 
-		'$workHistory'
+		'$workHistory',
+		'$imgUrl'
 		)";
 
 $result = $conn->query($query);
@@ -102,11 +102,6 @@ $result = $conn->query($query);
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
-	$output['status']['description'] = mysqli_error($conn);
-	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = [];
-	
-	mysqli_close($conn);
 
 	echo json_encode($output);
 

@@ -2,12 +2,13 @@ $('#noButton').on('click', ()=> {
     $('#removeRecord').fadeOut()
 })
 
+
 //single employee
 const getEmp = (object, index) => {
    return `<div class="container m-2" id="person${index}">
                     <div class="row">
                         <div class="col-sm-1 p-0">
-                            <img src="" alt="" class="img d-block" id="img"/>
+                            <img src="${object['data'][index]['imgUrl'] ? object['data'][index]['imgUrl'] : ''}" alt="" class="img" id="img" style="width: 90px; heigth: 115px;"/>
                         </div>
                         <div class="col-sm-6">
                             <h4>${object['data'][index]['firstName']} ${object['data'][index]['lastName']}</h4>
@@ -73,12 +74,13 @@ const getEmp = (object, index) => {
                                     <input type="number" name="phone" id="phone" class="form-control" value="${object['data'][index]['phone'] ? object['data'][index]['phone'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
-                                    <form method="post" action="" enctype="multipart/form-data" id="myform">
-                                        <div >
-                                            <input type="file" id="file" name="file" />
-                                            <input type="button" class="button" value="Upload" id="but_upload">
+                                <form method="post" action="" enctype="multipart/form-data" id="myform" class="form-group">  
+                                    <label for="file">Picture</label>
+                                        <div>
+                                            <input type="file" id="file" name="file" /> 
+                                            <input type="button" class="btn btn-primary" value="Upload" id="but_upload" /> 
                                         </div>
-                                    </form>
+                                </form> 
                                 </li>
                             </ul>
                         </div>
@@ -96,7 +98,7 @@ const getEmp = (object, index) => {
                                 </li>   
                                 <li class="list-group-item">
                                     <label for="hod" class="mr-2">Head of Department</label>
-                                    <input type="text" name="hod" id="hod" class="form-control" value="${object['data'][index]['hod'] ? object['data'][index]['hod'] : ''}"/>
+                                    <p name="hod" id="hod">${object['data'][index]['hod'] ? object['data'][index]['hod'] : ''}</p>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="salary" class="mr-2">Salary</label>
@@ -156,7 +158,6 @@ const getEmp = (object, index) => {
 
 // load all employees
 let rows = []
-let result = []
 
 $.ajax({
     url: 'php/getAll.php',
@@ -168,30 +169,39 @@ $.ajax({
             let count = i
             rows += getEmp(response, count)                
         }
-    
-        $('#main').html(`
-            ${rows}
+        
+        const renderInMain = object => {
+            $('#main').html(`
+            <div class="container" style="border: none;">
+                <div class="row">
+                    <button type="button" class="btn btn-md btn-success my-2" id="addEmployeeBtn" data-toggle="modal" data-target="#employeeForm">Create New Employee</button>
+                </div>
+            </div>
+            ${object}
         `);
-        console.log(response['data'])
+        }
+        renderInMain(rows)
         // enable editing data
-        for (let i = 0; i < response['data'].length; i++) {
-            $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
-            $(`#person${i} #cancelSave`).hide()
-            $(`#person${i} #saveCredentials`).hide()
-            $(`#person${i} #enableFields`).click(()=> {
-                $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', false)
-                $(`#person${i} #cancelSave`).show()
-                $(`#person${i} #saveCredentials`).show()
-                getDepartments()
-            })
-            $(`#person${i} #cancelSave`).click(()=> {
+        const enableEdit = () => {
+            for (let i = 0; i < response['data'].length; i++) {
                 $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
                 $(`#person${i} #cancelSave`).hide()
                 $(`#person${i} #saveCredentials`).hide()
-                $(`#person${i} #department`).html(`<option value="${response['data'][i]['departmentID']}">${response['data'][i]['department']}</option>`)
-            })
+                $(`#person${i} #enableFields`).click(()=> {
+                    $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', false)
+                    $(`#person${i} #cancelSave`).show()
+                    $(`#person${i} #saveCredentials`).show()
+                    getDepartments()
+                })
+                $(`#person${i} #cancelSave`).click(()=> {
+                    $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
+                    $(`#person${i} #cancelSave`).hide()
+                    $(`#person${i} #saveCredentials`).hide()
+                    $(`#person${i} #department`).html(`<option value="${response['data'][i]['departmentID']}">${response['data'][i]['department']}</option>`)
+                })
+            }
         }
-
+        enableEdit()
 
         // search by name
 
@@ -225,10 +235,10 @@ $.ajax({
                 url: 'php/getAllDepartments.php',
                 type: 'get',
                 dataType: 'json',
-                success: departments => {                
+                success: departments => {           
                     let options = []
                     for (let i = 0; i < departments['data'].length; i++) {
-                        options.push(`<option value="${departments['data'][i]['id']}">${departments['data'][i]['name']}</option>`)
+                        options.push(`<option value="${departments['data'][i]['id']}">${departments['data'][i]['departmentName']}</option>`)
                     }        
                     for (let i = 0; i < response['data'].length; i++) {
                         $(`#person${i} #department`).html(`${options}`)
@@ -241,27 +251,39 @@ $.ajax({
         $('#addEmployeeBtn').on('click', ()=> {
             getDepartments()
         })
+        // load employees
+
+        $(`#loadEmployees`).on('click', ()=> {
+            let someArr = []
+            $(`#main`).html('')
+            for (let i = 0; i < response['data'].length; i++) {
+                someArr.push(getEmp(response, i))
+            }
+            renderInMain(someArr)
+            enableEdit()
+            getDepartments()
+        })
 
         //submit new employee
 
         $('#submitNewEmployee').on('click', ()=> {
             const title = $('#titleNew').val(),
-                firstName = $('#firstNameNew').val(),
-                lastName = $('#lastNameNew').val(),
-                dob = $('#dobNew').val(),
-                address1 = $('#address1New').val(),
-                address2 = $('#address2New').val(),
-                postCode = $('#postCodeNew').val(),
-                city = $('#cityNew').val(),
-                email = $('#emailNew').val(),
-                phone = $('#phoneNew').val(),
-                position = $('#positionNew').val(),
-                department = $('#departmentNew').val(),
-                hod = $('#hodNew').val(),
-                salary = $('#salaryNew').val(),
-                startDate = $('#startDateNew').val(),
-                endDate = $('#endOfEmploymentNew').val(),
-                workHistory = $('#workHistoryNew').val();    
+                  firstName = $('#firstNameNew').val(),
+                  lastName = $('#lastNameNew').val(),
+                  dob = $('#dobNew').val(),
+                  address1 = $('#address1New').val(),
+                  address2 = $('#address2New').val(),
+                  postCode = $('#postCodeNew').val(),
+                  city = $('#cityNew').val(),
+                  email = $('#emailNew').val(),
+                  phone = $('#phoneNew').val(),
+                  position = $('#positionNew').val(),
+                  department = $('#departmentNew').val(),
+                  hod = $('#hodNew').val(),
+                  salary = $('#salaryNew').val(),
+                  startDate = $('#startDateNew').val(),
+                  endDate = $('#endOfEmploymentNew').val(),
+                  workHistory = $('#workHistoryNew').val();   
             if (!firstName) {
             alert('Enter first name')
             } else if (!lastName) {
@@ -298,7 +320,8 @@ $.ajax({
                     dataType: 'json',
                     success: newEmployee=> {
                         if (newEmployee['status']['name'] == 'ok') {
-                            alert(`Record created`)                
+                            alert(`Record created`)
+                            window.location.reload()               
                         } else {
                             alert(`Server Error`)
                         }
@@ -398,38 +421,188 @@ $.ajax({
         }
 
         // file upload
-        for (let i = 0; i < response['data'].length; i++) {
-            $(`#person${i} #but_upload`).on('click', ()=>{
-
-                var fd = new FormData();
-                var files = $(`#person${i} #file`)[0].files;
-                
-                // Check file selected or not
-                if(files.length > 0 ){
-                   fd.append('file',files[0]);
         
-                   $.ajax({
-                      url: 'php/upload.php',
-                      type: 'post',
-                      data: fd,
-                      contentType: false,
-                      processData: false,
-                      success: respond => {
-                         if(respond != 0){
-                            $(`#person${i} #img`).attr("src",respond); 
-                            $(`#person${i} img`).show(); // Display image element
-                         }else{
-                            alert('file not uploaded');
-                         }
-                      },
-                   });
-                }else{
-                   alert("Please select a file.");
-                }
+        for (let i = 0; i < response['data'].length; i++) {
+            $(`#person${i} #but_upload`).click(() => { 
+                let fd = new FormData(); 
+                let files = $(`#person${i} #file`)[0].files[0]; 
+                let id = response['data'][i]['id']
+                fd.append('id', JSON.stringify(id))
+                fd.append('file', files); 
+                $.ajax({ 
+                    url: 'php/fileUpload.php', 
+                    type: 'post', 
+                    data: fd, 
+                    contentType: false, 
+                    processData: false, 
+                    success: respond => { 
+                        if(respond != 0){ 
+                           alert('file uploaded'); 
+                           let imgUrl = respond['data'].replace('../', './')
+                           $(`#person${i} #img`).prop('src', imgUrl)
+                        } 
+                        else{ 
+                            alert('file not uploaded'); 
+                        } 
+                    }, 
+                }); 
             });
         }
 
+        // render list of departments
+
+        const renderDeps = (object) => {
+            return `
+            <div class="container" id="department${object['id']}">
+                <div class="row justify-content-between">
+                    <div class="col-8-sm ml-2">
+                        <h3 class="h3 w-100">${object['departmentName']}</h3>
+                    </div>
+                    <div class="col-4-sm mr-2">
+                        <button type="button" class="btn m-2" data-toggle="collapse" data-target="#updateDep${object['id']}"><span><i class="fa fa-sort-desc fa-3x"></i></span></button>
+                    </div>
+                </div>
+                <div class="modal fade" id="deleteDepartment" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h3 class="h3">Do you want to delete department?</h3>
+                                <button class="btn btn-md btn-success" id="delDep">Yes</button>
+                                <button class="btn btn-danger" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="row collapse justify-content-between" id="updateDep${object['id']}">
+                    <div class="col-10-sm form-group">
+                        <label for="hodName" class="ml-2">Head of Department</label>
+                        <input name="hodName" id="hodName${object['id']}" class="form-control ml-2" value="${object['hod'] ? object['hod'] : ''}" />
+                        <label for="memberCount" class="ml-2">Members</label>
+                        <p name="memberCount" class="ml-2" id="memberCount">0</p>
+                        <label for="depLocation" class="ml-2">Location</label>
+                        <select name="depLocation" id="depLocation${object['id']}" class="form-control ml-2 pl-0">
+                            <option class="active">${object['locationName']}</option>
+                            <option value="1">London</option>
+                            <option value="2">New York</option>
+                            <option value="3">Paris</option>
+                            <option value="4">Munich</option>
+                            <option value="5">Rome</option>
+                        </select>
+                    </div>
+                    <div class="col-2-sm">
+                        <div class="row">                            
+                            <div class="col-6-sm d-flex flex-column">
+                                <button type="button" class="btn btn-success m-2" id="submitDep${object['id']}">Submit</button>
+                                <button type="button" class="btn btn-danger m-2" id="cancelSubmitDep${object['id']}">Cancel</button>
+                            </div>
+                            <div class="col-6-sm d-flex flex-column">
+                                <button type="button" class="btn m-2" id="editDep${object['id']}"><span><i class="fa fa-pencil-square-o"></i></span></button>
+                                <button type="button" class="btn m-2" id="cancelDep${object['id']}" data-toggle="modal" data-target="#deleteDepartment"><span><i class="fa fa-trash-o"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>`
+        }
+        
+        $(`#onManage`).on('click', ()=> {
+            $.ajax({
+                url: 'php/getAllDepartments.php',
+                type: 'get',
+                dataType: 'json',
+                success: respond => {
+                    let newDeps = []
+                    respond['data'].forEach(obj=> {
+                    newDeps.push(renderDeps(obj))
+                    })
+                    
+                    $(`#main`).html(`
+                    <div class="container" style="border: none;">
+                        <div class="row">
+                            <button type="button" class="btn btn-md btn-success my-2" id="createNewDep" data-toggle="modal" data-target="#newDepartment">Create New Department</button>
+                            <div class="modal fade" id="newDepartment" role="dialog">
+                                <div class="modal-dialog modal-md">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Create New Department</h4>
+                                            <button class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-group">
+                                                <label for="depName">Department Name</label>
+                                                <input name="depName" id="depName" class="form-control"/>
+                                                <label for="newHod">Head of Department</label>
+                                                <input name="newHod" id="newHod" class="form-control"/>
+                                                <label for="newLocation">Location</label>
+                                                <select name="depLocation" id="newLocation" class="form-control pl-0">
+                                                    <option value="1">London</option>
+                                                    <option value="2">New York</option>
+                                                    <option value="3">Paris</option>
+                                                    <option value="4">Munich</option>
+                                                    <option value="5">Rome</option>
+                                                </select>
+                                            </form>
+                                            <div class="row justify-content-around">
+                                                <button type="button" class="btn btn-success" id="submitNewDep">Submit</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    ${newDeps}
+                    `)
+
+                    // disable enable input and button on edit
+                    console.log(respond)
+                    respond['data'].forEach(obj=> {
+                        $(`#department${obj['id']} input, #department${obj['id']} select`).prop('disabled', true)
+                        $(`#department${obj['id']} #submitDep${obj['id']}`).hide()
+                        $(`#department${obj['id']} #cancelSubmitDep${obj['id']}`).hide()
+                        $(`#editDep${obj['id']}`).on('click', ()=> {
+                            $(`#department${obj['id']} input, #department${obj['id']} select`).prop('disabled', false)
+                            $(`#department${obj['id']} #submitDep${obj['id']}`).show()
+                            $(`#department${obj['id']} #cancelSubmitDep${obj['id']}`).show()
+                        })
+                        $(`#cancelSubmitDep${obj['id']}`).on('click', ()=> {
+                            $(`#department${obj['id']} input, #department${obj['id']} select`).prop('disabled', true)
+                            $(`#department${obj['id']} #submitDep${obj['id']}`).hide()
+                            $(`#department${obj['id']} #cancelSubmitDep${obj['id']}`).hide()
+                            $(`#department${obj['id']} input`).val('')
+                        })
+
+                        //check if department can be deleted
+                        $(`#department${obj['id']} #delDep`).on('click', ()=> {
+                            let ifNotZero = $(`#department${obj['id']} #memberCount`).html()
+                            if (ifNotZero > 0) {
+                                alert('Cannot delete department with active employees!')
+                                $(`#department${obj['id']} #deleteDepartment`).modal('hide')
+                            } else {
+                                // ajax call to deleteDepartmentById.php
+                            }
+                        })
+                    })
+
+                    // counting specific department memmbers
+
+                    let howMany = 0
+                    respond['data'].forEach(depsCount=> {
+                        response['data'].forEach(empsCount=> {
+                            if (depsCount['departmentName'] == empsCount['department']) {
+                                howMany++
+                            }
+                        })
+                        $(`#department${depsCount['id']} #memberCount`).html(`${howMany}`)
+                        howMany = 0
+                    })
+                }
+            })
+            
+        })
     }    
        
 })
+
 

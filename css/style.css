@@ -13,7 +13,7 @@ body {
     opacity: 0 !important;
 }
 
-input:disabled, textarea:disabled {
+input:disabled, textarea:disabled, select:disabled {
     background-color: #ffff !important;
     border: none !important;
 }
@@ -46,10 +46,19 @@ input#file-upload-button {
     background-size: contain;
 }
 
+#depManagement .modal-body {
+    height: 40vh;
+}
+
+#depDescription > .row {
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
  @media only screen and (max-width: 768px) {
     #employeeForm .modal-dialog .modal-content {
         width: 100vw;
     }
  }
 
-
+ 
