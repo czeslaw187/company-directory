@@ -1,12 +1,5 @@
 <?php
-
-	// example use from browser
-	// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
-	// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id= <id>
-
-	// remove next two lines for production
-	
-	ini_set('display_errors', 'On');
+ini_set('display_errors', 'On');
 	error_reporting(E_ALL);
 
 	$executionStartTime = microtime(true);
@@ -32,10 +25,12 @@
 		exit;
 
 	}	
+    
+    $hod = $_POST['hod'];
+    $locationID = $_POST['location'];
+    $id = $_POST['id'];
 
-	// $_REQUEST used for development / debugging. Remember to cange to $_POST for production
-
-	$query = 'DELETE FROM department WHERE id = ' . $_POST['id'];
+	$query = "UPDATE department d SET d.hod='$hod', d.locationID='$locationID' WHERE d.id='$id'";
 
 	$result = $conn->query($query);
 	

@@ -262,192 +262,205 @@ $.ajax({
             renderInMain(someArr)
             enableEdit()
             getDepartments()
+            submitNewEmployee()
+            updateNewEmployee(response)
+            deleteRecord(response)
+            loadFiles()
         })
 
         //submit new employee
 
-        $('#submitNewEmployee').on('click', ()=> {
-            const title = $('#titleNew').val(),
-                  firstName = $('#firstNameNew').val(),
-                  lastName = $('#lastNameNew').val(),
-                  dob = $('#dobNew').val(),
-                  address1 = $('#address1New').val(),
-                  address2 = $('#address2New').val(),
-                  postCode = $('#postCodeNew').val(),
-                  city = $('#cityNew').val(),
-                  email = $('#emailNew').val(),
-                  phone = $('#phoneNew').val(),
-                  position = $('#positionNew').val(),
-                  department = $('#departmentNew').val(),
-                  hod = $('#hodNew').val(),
-                  salary = $('#salaryNew').val(),
-                  startDate = $('#startDateNew').val(),
-                  endDate = $('#endOfEmploymentNew').val(),
-                  workHistory = $('#workHistoryNew').val();   
-            if (!firstName) {
-            alert('Enter first name')
-            } else if (!lastName) {
-                alert('Enter last name')
-            } else if (!email) {              
-                alert('Enter a valid email')
-            } else if (!dob) {
-                alert('Enter valid date of birth')            
-            } else if (!department) {
-                alert('Enter valid department')            
-            } else {
-                $.ajax({
-                    url: 'php/insertNewEmployee.php',
-                    method: 'post',
-                    data: {
-                        title: title,
-                        firstName: firstName,
-                        lastName: lastName,
-                        dob: dob,
-                        address1: address1,
-                        address2: address2,
-                        postCode: postCode,
-                        city: city,
-                        email: email,
-                        phone: phone,
-                        position: position,
-                        department: department,
-                        hod: hod,
-                        salary: salary,
-                        startDate: startDate,
-                        endDate: endDate,
-                        workHistory: workHistory
-                    },
-                    dataType: 'json',
-                    success: newEmployee=> {
-                        if (newEmployee['status']['name'] == 'ok') {
-                            alert(`Record created`)
-                            window.location.reload()               
-                        } else {
-                            alert(`Server Error`)
-                        }
-                    }
-                })
-            }
-        })
-
-        // update record
-
-        for (let i = 0; i < response['data'].length; i++) {
-            $(`#person${i} #saveCredentials`).on('click', ()=> {
-                console.log(response['data'][i]['id'])
-            const title = $(`#person${i} #title`).val(),
-                id = response['data'][i]['id'],  
-                firstName = $(`#person${i} #firstName`).val(),
-                lastName = $(`#person${i} #lastName`).val(),
-                dob = $(`#person${i} #dob`).val(),
-                address1 = $(`#person${i} #address1`).val(),
-                address2 = $(`#person${i} #address2`).val(),
-                postCode = $(`#person${i} #postCode`).val(),
-                city = $(`#person${i} #city`).val(),
-                email = $(`#person${i} #email`).val(),
-                phone = $(`#person${i} #phone`).val(),
-                position = $(`#person${i} #position`).val(),
-                department = $(`#person${i} #department`).val(),
-                hod = $(`#person${i} #hod`).val(),
-                salary = $(`#person${i} #salary`).val(),
-                startDate = $(`#person${i} #startDate`).val(),
-                endDate = $(`#person${i} #endOfEmployment`).val(),
-                workHistory = $(`#person${i} #workHistory`).val();
-                $.ajax({
-                    url: 'php/updateRecord.php',
-                    method: 'post',
-                    data: {
-                        id: id,
-                        title: title,
-                        firstName: firstName,
-                        lastName: lastName,
-                        dob: dob,
-                        address1: address1,
-                        address2: address2,
-                        postCode: postCode,
-                        city: city,
-                        email: email,
-                        phone: phone,
-                        position: position,
-                        department: department,
-                        hod: hod,
-                        salary: salary,
-                        startDate: startDate,
-                        endDate: endDate,
-                        workHistory: workHistory
-                    },
-                    dataType: 'json',
-                    success: response=> {
-                        if (response['status']['name'] == 'ok') {
-                            alert('Record updated')
-                            $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
-                            $(`#person${i} #cancelSave`).hide()
-                            $(`#person${i} #saveCredentials`).hide()
-                            window.location.reload()
-                        } else {
-                            alert(`Server Error`)
-                        }
-                    }
-                })
-            })
-        }
-
-        // delete record
-
-        for (let i = 0; i < response['data'].length; i++) {
-            $(`#person${i} #deleteRecord`).on('click', ()=> {
-                const endDate = $(`#person${i} #endOfEmployment`).val()
-                if (endDate.toLowerCase() === 'active') {
-                    alert('Cannot delete active employee!')
+        const submitNewEmployee = () => {
+            $('#submitNewEmployee').on('click', ()=> {
+                const title = $('#titleNew').val(),
+                      firstName = $('#firstNameNew').val(),
+                      lastName = $('#lastNameNew').val(),
+                      dob = $('#dobNew').val(),
+                      address1 = $('#address1New').val(),
+                      address2 = $('#address2New').val(),
+                      postCode = $('#postCodeNew').val(),
+                      city = $('#cityNew').val(),
+                      email = $('#emailNew').val(),
+                      phone = $('#phoneNew').val(),
+                      position = $('#positionNew').val(),
+                      department = $('#departmentNew').val(),
+                      hod = $('#hodNew').val(),
+                      salary = $('#salaryNew').val(),
+                      startDate = $('#startDateNew').val(),
+                      endDate = $('#endOfEmploymentNew').val(),
+                      workHistory = $('#workHistoryNew').val();   
+                if (!firstName) {
+                alert('Enter first name')
+                } else if (!lastName) {
+                    alert('Enter last name')
+                } else if (!email) {              
+                    alert('Enter a valid email')
+                } else if (!dob) {
+                    alert('Enter valid date of birth')            
+                } else if (!department) {
+                    alert('Enter valid department')            
                 } else {
                     $.ajax({
-                        url: 'php/deleteRecord.php',
+                        url: 'php/insertNewEmployee.php',
                         method: 'post',
-                        dataType: 'json',
                         data: {
-                            id: response['data'][i]['id']    
+                            title: title,
+                            firstName: firstName,
+                            lastName: lastName,
+                            dob: dob,
+                            address1: address1,
+                            address2: address2,
+                            postCode: postCode,
+                            city: city,
+                            email: email,
+                            phone: phone,
+                            position: position,
+                            department: department,
+                            hod: hod,
+                            salary: salary,
+                            startDate: startDate,
+                            endDate: endDate,
+                            workHistory: workHistory
                         },
-                        success: deleted=> {
-                            if (deleted) {
-                                alert('Record deleted') 
-                                window.location.reload()                           
+                        dataType: 'json',
+                        success: newEmployee=> {
+                            if (newEmployee['status']['name'] == 'ok') {
+                                alert(`Record created`)
+                                window.location.reload()               
                             } else {
-                                alert('Server Error')
+                                alert(`Server Error`)
                             }
                         }
                     })
-                }      
+                }
             })
         }
+        submitNewEmployee()
+        // update record
 
+        const updateNewEmployee = (response) => {
+            for (let i = 0; i < response['data'].length; i++) {
+                $(`#person${i} #saveCredentials`).on('click', ()=> {
+                    console.log(response['data'][i]['id'])
+                const title = $(`#person${i} #title`).val(),
+                    id = response['data'][i]['id'],  
+                    firstName = $(`#person${i} #firstName`).val(),
+                    lastName = $(`#person${i} #lastName`).val(),
+                    dob = $(`#person${i} #dob`).val(),
+                    address1 = $(`#person${i} #address1`).val(),
+                    address2 = $(`#person${i} #address2`).val(),
+                    postCode = $(`#person${i} #postCode`).val(),
+                    city = $(`#person${i} #city`).val(),
+                    email = $(`#person${i} #email`).val(),
+                    phone = $(`#person${i} #phone`).val(),
+                    position = $(`#person${i} #position`).val(),
+                    department = $(`#person${i} #department`).val(),
+                    hod = $(`#person${i} #hod`).val(),
+                    salary = $(`#person${i} #salary`).val(),
+                    startDate = $(`#person${i} #startDate`).val(),
+                    endDate = $(`#person${i} #endOfEmployment`).val(),
+                    workHistory = $(`#person${i} #workHistory`).val();
+                    $.ajax({
+                        url: 'php/updateRecord.php',
+                        method: 'post',
+                        data: {
+                            id: id,
+                            title: title,
+                            firstName: firstName,
+                            lastName: lastName,
+                            dob: dob,
+                            address1: address1,
+                            address2: address2,
+                            postCode: postCode,
+                            city: city,
+                            email: email,
+                            phone: phone,
+                            position: position,
+                            department: department,
+                            hod: hod,
+                            salary: salary,
+                            startDate: startDate,
+                            endDate: endDate,
+                            workHistory: workHistory
+                        },
+                        dataType: 'json',
+                        success: response=> {
+                            if (response['status']['name'] == 'ok') {
+                                alert('Record updated')
+                                $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
+                                $(`#person${i} #cancelSave`).hide()
+                                $(`#person${i} #saveCredentials`).hide()
+                                window.location.reload()
+                            } else {
+                                alert(`Server Error`)
+                            }
+                        }
+                    })
+                })
+            }
+        }
+        updateNewEmployee(response)
+        // delete record
+
+        const deleteRecord = (response) => {
+            for (let i = 0; i < response['data'].length; i++) {
+                $(`#person${i} #deleteRecord`).on('click', ()=> {
+                    const endDate = $(`#person${i} #endOfEmployment`).val()
+                    if (endDate.toLowerCase() === 'active') {
+                        alert('Cannot delete active employee!')
+                    } else {
+                        $.ajax({
+                            url: 'php/deleteRecord.php',
+                            method: 'post',
+                            dataType: 'json',
+                            data: {
+                                id: response['data'][i]['id']    
+                            },
+                            success: deleted=> {
+                                if (deleted) {
+                                    alert('Record deleted') 
+                                    window.location.reload()                           
+                                } else {
+                                    alert('Server Error')
+                                }
+                            }
+                        })
+                    }      
+                })
+            }
+        }
+        deleteRecord(response)
         // file upload
         
-        for (let i = 0; i < response['data'].length; i++) {
-            $(`#person${i} #but_upload`).click(() => { 
-                let fd = new FormData(); 
-                let files = $(`#person${i} #file`)[0].files[0]; 
-                let id = response['data'][i]['id']
-                fd.append('id', JSON.stringify(id))
-                fd.append('file', files); 
-                $.ajax({ 
-                    url: 'php/fileUpload.php', 
-                    type: 'post', 
-                    data: fd, 
-                    contentType: false, 
-                    processData: false, 
-                    success: respond => { 
-                        if(respond != 0){ 
-                           alert('file uploaded'); 
-                           let imgUrl = respond['data'].replace('../', './')
-                           $(`#person${i} #img`).prop('src', imgUrl)
-                        } 
-                        else{ 
-                            alert('file not uploaded'); 
-                        } 
-                    }, 
-                }); 
-            });
+        const loadFiles = () => {
+            for (let i = 0; i < response['data'].length; i++) {
+                $(`#person${i} #but_upload`).click(() => { 
+                    let fd = new FormData(); 
+                    let files = $(`#person${i} #file`)[0].files[0]; 
+                    let id = response['data'][i]['id']
+                    fd.append('id', JSON.stringify(id))
+                    fd.append('file', files); 
+                    $.ajax({ 
+                        url: 'php/fileUpload.php', 
+                        type: 'post', 
+                        data: fd, 
+                        contentType: false, 
+                        processData: false, 
+                        success: respond => { 
+                            if(respond != 0){ 
+                               alert('file uploaded'); 
+                               let imgUrl = respond['data'].replace('../', './')
+                               $(`#person${i} #img`).prop('src', imgUrl)
+                            } 
+                            else{ 
+                                alert('file not uploaded'); 
+                            } 
+                        }, 
+                    }); 
+                });
+            }
         }
+        loadFiles()
 
         // render list of departments
 
@@ -462,12 +475,12 @@ $.ajax({
                         <button type="button" class="btn m-2" data-toggle="collapse" data-target="#updateDep${object['id']}"><span><i class="fa fa-sort-desc fa-3x"></i></span></button>
                     </div>
                 </div>
-                <div class="modal fade" id="deleteDepartment" role="dialog">
+                <div class="modal fade" id="deleteDepartment${object['id']}" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-body text-center">
                                 <h3 class="h3">Do you want to delete department?</h3>
-                                <button class="btn btn-md btn-success" id="delDep">Yes</button>
+                                <button class="btn btn-md btn-success" id="delDep${object['id']}">Yes</button>
                                 <button class="btn btn-danger" data-dismiss="modal">No</button>
                             </div>
                         </div>
@@ -478,7 +491,7 @@ $.ajax({
                         <label for="hodName" class="ml-2">Head of Department</label>
                         <input name="hodName" id="hodName${object['id']}" class="form-control ml-2" value="${object['hod'] ? object['hod'] : ''}" />
                         <label for="memberCount" class="ml-2">Members</label>
-                        <p name="memberCount" class="ml-2" id="memberCount">0</p>
+                        <p name="memberCount" class="ml-2" id="memberCount${object['id']}"></p>
                         <label for="depLocation" class="ml-2">Location</label>
                         <select name="depLocation" id="depLocation${object['id']}" class="form-control ml-2 pl-0">
                             <option class="active">${object['locationName']}</option>
@@ -497,7 +510,7 @@ $.ajax({
                             </div>
                             <div class="col-6-sm d-flex flex-column">
                                 <button type="button" class="btn m-2" id="editDep${object['id']}"><span><i class="fa fa-pencil-square-o"></i></span></button>
-                                <button type="button" class="btn m-2" id="cancelDep${object['id']}" data-toggle="modal" data-target="#deleteDepartment"><span><i class="fa fa-trash-o"></i></span></button>
+                                <button type="button" class="btn m-2" id="cancelDep${object['id']}" data-toggle="modal" data-target="#deleteDepartment${object['id']}"><span><i class="fa fa-trash-o"></i></span></button>
                             </div>
                         </div>
                     </div>
@@ -534,7 +547,7 @@ $.ajax({
                                                 <label for="newHod">Head of Department</label>
                                                 <input name="newHod" id="newHod" class="form-control"/>
                                                 <label for="newLocation">Location</label>
-                                                <select name="depLocation" id="newLocation" class="form-control pl-0">
+                                                <select name="newLocation" id="newLocation" class="form-control pl-0">
                                                     <option value="1">London</option>
                                                     <option value="2">New York</option>
                                                     <option value="3">Paris</option>
@@ -556,7 +569,6 @@ $.ajax({
                     `)
 
                     // disable enable input and button on edit
-                    console.log(respond)
                     respond['data'].forEach(obj=> {
                         $(`#department${obj['id']} input, #department${obj['id']} select`).prop('disabled', true)
                         $(`#department${obj['id']} #submitDep${obj['id']}`).hide()
@@ -571,19 +583,90 @@ $.ajax({
                             $(`#department${obj['id']} #submitDep${obj['id']}`).hide()
                             $(`#department${obj['id']} #cancelSubmitDep${obj['id']}`).hide()
                             $(`#department${obj['id']} input`).val('')
-                        })
-                        // delete department
-                        $(`#department${obj['id']} #delDep`).on('click', ()=> {
-                            let ifNotZero = $(`#department${obj['id']} #memberCount`).html()
-                            if (ifNotZero > 0) {
-                                alert('Cannot delete department with active employees!')
-                                $(`#department${obj['id']} #deleteDepartment`).modal('hide')
-                            } else {
-                                // ajax call to deleteDepartmentById.php
-                            }
-                        })
+                        })                        
                     })
+                        
+                         // delete department
+                         respond['data'].forEach(obj=> {
+                            $(`#department${obj['id']} #delDep${obj['id']}`).on('click', ()=> {
+                                let ifNotZero = $(`#department${obj['id']} #memberCount${obj['id']}`).html()
+                                console.log(ifNotZero, obj['id'])
+                                if (ifNotZero > 0) {
+                                    alert('Cannot delete department with active employees!')
+                                    $(`#department${obj['id']} #deleteDepartment${obj['id']}`).modal('hide')
+                                } else {
+                                    $.ajax({
+                                        url: 'php/deleteDepartmentById.php',
+                                        type: 'post',
+                                        data: {
+                                            id: obj['id']
+                                        },
+                                        dataType: 'json',
+                                        success: ifDel=> {
+                                            if (ifDel['status']['code'] == '200') {
+                                                alert('Record deleted')
+                                                window.location.reload()
+                                            } else {
+                                                alert('Could not delete record!')
+                                            }
+                                        }
+                                    })
+                                }
+                            })
+                        })    
+                        
+                        // update department 
+                        
+                        respond['data'].forEach(obj=> {
+                            $(`#department${obj['id']} #submitDep${obj['id']}`).on('click', ()=> {
+                                const hod = $(`#department${obj['id']} #hodName${obj['id']}`).val(),
+                                      location = $(`#department${obj['id']} #depLocation${obj['id']}`).val();
+                                $.ajax({
+                                    url: 'php/updateDepartment.php',
+                                    type: 'post',
+                                    data: {
+                                        hod: hod,
+                                        location: location,
+                                        id: obj['id'],
+                                    },
+                                    dataType: 'json',
+                                    success: updated=> {
+                                        if (updated['status']['code'] == '200') {
+                                            alert('Record updated')
+                                            window.location.reload()
+                                        } else {
+                                            alert('Failed to upload record')
+                                        }
+                                    }
+                                })      
+                            })
+                        })
 
+                        //create new department 
+
+                        $(`#submitNewDep`).on('click', ()=> {
+                            const departmentName = $(`#depName`).val(),
+                                  newHod = $(`#newHod`).val(),
+                                  location = $(`#newLocation`).val();
+                                  $.ajax({
+                                      url: 'php/insertDepartment.php',
+                                      type: 'post',
+                                      data: {
+                                          name: departmentName,
+                                          hod: newHod,
+                                          locationID: location  
+                                      },
+                                      dataType: 'json',
+                                      success: newObj=> {
+                                          if (newObj['status']['code'] == '200') {
+                                              alert('New department created')
+                                              window.location.reload()
+                                          } else {
+                                              alert('Failed to create new record!')
+                                          }
+                                      }
+                                  })
+                        })
                     // counting specific department memmbers
 
                     let howMany = 0
