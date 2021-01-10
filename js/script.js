@@ -596,7 +596,7 @@ $.ajax({
                                     $(`#department${obj['id']} #deleteDepartment${obj['id']}`).modal('hide')
                                 } else {
                                     $.ajax({
-                                        url: 'php/deleteDepartmentById.php',
+                                        url: 'php/deleteDepartmentByID.php',
                                         type: 'post',
                                         data: {
                                             id: obj['id']
