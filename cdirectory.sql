@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2021 at 01:27 AM
+-- Generation Time: Jan 10, 2021 at 05:32 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.13
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `department` (
   `id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
+  `hod` text DEFAULT NULL,
   `locationID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -37,19 +38,19 @@ CREATE TABLE `department` (
 -- Dumping data for table `department`
 --
 
-INSERT INTO `department` (`id`, `name`, `locationID`) VALUES
-(1, 'Human Resources', 1),
-(2, 'Sales', 2),
-(3, 'Marketing', 2),
-(4, 'Legal', 1),
-(5, 'Services', 1),
-(6, 'Research and Development', 3),
-(7, 'Product Management', 3),
-(8, 'Training', 4),
-(9, 'Support', 4),
-(10, 'Engineering', 5),
-(11, 'Accounting', 5),
-(12, 'Business Development', 3);
+INSERT INTO `department` (`id`, `name`, `hod`, `locationID`) VALUES
+(1, 'Human Resources', NULL, 1),
+(2, 'Sales', NULL, 2),
+(3, 'Marketing', NULL, 2),
+(4, 'Legal', NULL, 1),
+(5, 'Services', NULL, 1),
+(6, 'Research and Development', NULL, 3),
+(7, 'Product Management', NULL, 3),
+(8, 'Training', NULL, 4),
+(9, 'Support', NULL, 4),
+(10, 'Engineering', NULL, 5),
+(11, 'Accounting', NULL, 5),
+(12, 'Business Development', NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -93,18 +94,18 @@ CREATE TABLE `personnel` (
   `post_code` text DEFAULT NULL,
   `city` text DEFAULT NULL,
   `phone` int(11) DEFAULT NULL,
-  `hod` text DEFAULT NULL,
   `salary` int(11) DEFAULT NULL,
   `hire_date` text DEFAULT NULL,
   `end_date` text DEFAULT NULL,
-  `work_history` text DEFAULT NULL
+  `work_history` text DEFAULT NULL,
+  `imgUrl` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `personnel`
 --
 
-INSERT INTO `personnel` (`id`, `firstName`, `lastName`, `jobTitle`, `email`, `departmentID`, `title`, `dob`, `address_1`, `address_2`, `post_code`, `city`, `phone`, `hod`, `salary`, `hire_date`, `end_date`, `work_history`) VALUES
+INSERT INTO `personnel` (`id`, `firstName`, `lastName`, `jobTitle`, `email`, `departmentID`, `title`, `dob`, `address_1`, `address_2`, `post_code`, `city`, `phone`, `salary`, `hire_date`, `end_date`, `work_history`, `imgUrl`) VALUES
 (1, 'Robert', 'Heffron', '', 'rheffron0@ibm.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (2, 'Kris', 'Kovnot', '', 'kkovnot1@google.nl', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'Vera', 'Kisbee', '', 'vkisbee2@nih.gov', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -127,9 +128,9 @@ INSERT INTO `personnel` (`id`, `firstName`, `lastName`, `jobTitle`, `email`, `de
 (20, 'Moishe', 'Flinn', '', 'mflinnj@list-manage.com', 12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (21, 'Gay', 'Bickford', '', 'gbickfordk@scientificamerican.com', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (22, 'Erik', 'Lindback', '', 'elindbackl@virginia.edu', 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(23, 'Tamarra', 'Ace', '', 'tacem@vinaora.com', 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(23, 'Tamarra', 'Ace', '', 'tacem@vinaora.com', 1, 'mr', '21/07/2000', '', '', '', '', 0, 0, '', '', '', './images/'),
 (24, 'Barbara-anne', 'Rooksby', '', 'brooksbyn@issuu.com', 12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(25, 'Lucien', 'Allsup', '', 'lallsupo@goo.ne.jp', 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(25, 'Lucien', 'Allsup', '', 'lallsupo@goo.ne.jp', 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, './images/'),
 (26, 'Jackelyn', 'Imlach', '', 'jimlachp@google.it', 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (27, 'Virge', 'Bootes', '', 'vbootesq@oracle.com', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (28, 'Rafferty', 'Matasov', '', 'rmatasovr@4shared.com', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -164,7 +165,7 @@ INSERT INTO `personnel` (`id`, `firstName`, `lastName`, `jobTitle`, `email`, `de
 (57, 'Rinaldo', 'Fandrey', '', 'rfandrey1k@bbc.co.uk', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (58, 'Roanna', 'Standering', '', 'rstandering1l@cocolog-nifty.com', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (59, 'Lorrie', 'Fattorini', '', 'lfattorini1m@geocities.jp', 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(60, 'Talbot', 'Andrassy', '', 'tandrassy1n@bigcartel.com', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(60, 'Talbot', 'Andrassy', '', 'tandrassy1n@bigcartel.com', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, './images/'),
 (61, 'Cindi', 'O\'Mannion', '', 'comannion1o@ameblo.jp', 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (62, 'Pancho', 'Mullineux', '', 'pmullineux1p@webmd.com', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (63, 'Cynthy', 'Peyntue', '', 'cpeyntue1q@amazon.co.jp', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -204,7 +205,8 @@ INSERT INTO `personnel` (`id`, `firstName`, `lastName`, `jobTitle`, `email`, `de
 (97, 'Stefanie', 'Anker', '', 'sanker2o@hud.gov', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (98, 'Cherye', 'de Cullip', '', 'cdecullip2p@loc.gov', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (99, 'Sinclare', 'Deverall', '', 'sdeverall2q@ow.ly', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(100, 'Shae', 'Johncey', '', 'sjohncey2r@bluehost.com', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(100, 'Shae', 'Johncey', '', 'sjohncey2r@bluehost.com', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(138, 'czeh', 'mich', '', 'czehug@gmail.com', 9, 'mr', '2', '', '', '', '', 0, 0, '', '', '', '');
 
 --
 -- Indexes for dumped tables
@@ -248,7 +250,7 @@ ALTER TABLE `location`
 -- AUTO_INCREMENT for table `personnel`
 --
 ALTER TABLE `personnel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
