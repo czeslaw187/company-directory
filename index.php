@@ -104,10 +104,6 @@
                                 <label for="phone">Phone</label>
                                 <input type="text" name="phoneNew" id="phoneNew" class="form-control">
                             </li>
-                            <li class="list-group-item">
-                                <label for="pisctureNew">Picture</label>
-                                <input type="file" name="fileNew" id="fileNew" class="form-control">
-                            </li>
                         </ul>
                     </div>
                     <div class="col-sm-6">
