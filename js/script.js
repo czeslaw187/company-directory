@@ -648,24 +648,28 @@ $.ajax({
                             const departmentName = $(`#depName`).val(),
                                   newHod = $(`#newHod`).val(),
                                   location = $(`#newLocation`).val();
-                                  $.ajax({
-                                      url: 'php/insertDepartment.php',
-                                      type: 'post',
-                                      data: {
-                                          name: departmentName,
-                                          hod: newHod,
-                                          locationID: location  
-                                      },
-                                      dataType: 'json',
-                                      success: newObj=> {
-                                          if (newObj['status']['code'] == '200') {
-                                              alert('New department created')
-                                              window.location.reload()
-                                          } else {
-                                              alert('Failed to create new record!')
-                                          }
-                                      }
-                                  })
+                                  if (!departmentName) {
+                                      alert(`Enter department name`)
+                                  } else {
+                                    $.ajax({
+                                        url: 'php/insertDepartment.php',
+                                        type: 'post',
+                                        data: {
+                                            name: departmentName,
+                                            hod: newHod,
+                                            locationID: location  
+                                        },
+                                        dataType: 'json',
+                                        success: newObj=> {
+                                            if (newObj['status']['code'] == '200') {
+                                                alert('New department created')
+                                                window.location.reload()
+                                            } else {
+                                                alert('Failed to create new record!')
+                                            }
+                                        }
+                                    })
+                                  }
                         })
                     // counting specific department memmbers
 
