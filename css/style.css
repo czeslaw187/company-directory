@@ -26,14 +26,6 @@ input#file-upload-button {
     background-color: white;
 }
 
-#employeeForm .modal {
-    margin: 0 auto;
-}
-
- #employeeForm .modal-dialog .modal-content {
-     width: 60vw;
- }
-
 #employeeForm input::-webkit-input-placeholder {
     color: red;
 }

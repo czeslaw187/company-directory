@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2021 at 05:42 AM
+-- Generation Time: Jan 11, 2021 at 02:52 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.13
 
@@ -40,17 +40,17 @@ CREATE TABLE `department` (
 
 INSERT INTO `department` (`id`, `name`, `hod`, `locationID`) VALUES
 (1, 'Human Resources', NULL, 1),
-(2, 'Sales', NULL, 2),
-(3, 'Marketing', NULL, 2),
-(4, 'Legal', NULL, 1),
-(5, 'Services', NULL, 1),
+(2, 'Legal', NULL, 1),
+(3, 'Services', NULL, 1),
+(4, 'Sales', NULL, 2),
+(5, 'Marketing', NULL, 2),
 (6, 'Research and Development', NULL, 3),
 (7, 'Product Management', NULL, 3),
-(8, 'Training', NULL, 4),
-(9, 'Support', NULL, 4),
-(10, 'Engineering', NULL, 5),
-(11, 'Accounting', NULL, 5),
-(12, 'Business Development', NULL, 3);
+(8, 'Business Development', NULL, 3),
+(9, 'Training', NULL, 4),
+(10, 'Support', NULL, 4),
+(11, 'Engineering', NULL, 5),
+(12, 'Accounting', NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -206,7 +206,7 @@ INSERT INTO `personnel` (`id`, `firstName`, `lastName`, `jobTitle`, `email`, `de
 (98, 'Cherye', 'de Cullip', '', 'cdecullip2p@loc.gov', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (99, 'Sinclare', 'Deverall', '', 'sdeverall2q@ow.ly', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (100, 'Shae', 'Johncey', '', 'sjohncey2r@bluehost.com', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(138, 'czeh', 'mich', '', 'czehug@gmail.com', 9, 'mr', '2', '', '', '', '', 0, 0, '', '', '', '');
+(141, 'czeh', 'mich', '', 'czehug@gmail.com', 1, 'mr', '21/07/1988', '', '', '', '', 0, 0, '', '', '', '');
 
 --
 -- Indexes for dumped tables
@@ -238,7 +238,7 @@ ALTER TABLE `personnel`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `location`
@@ -250,7 +250,7 @@ ALTER TABLE `location`
 -- AUTO_INCREMENT for table `personnel`
 --
 ALTER TABLE `personnel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
