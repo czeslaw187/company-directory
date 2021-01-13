@@ -341,7 +341,6 @@ $.ajax({
         const updateNewEmployee = (response) => {
             for (let i = 0; i < response['data'].length; i++) {
                 $(`#person${i} #saveCredentials`).on('click', ()=> {
-                    console.log(response['data'][i]['id'])
                 const title = $(`#person${i} #title`).val(),
                     id = response['data'][i]['id'],  
                     firstName = $(`#person${i} #firstName`).val(),
@@ -467,7 +466,7 @@ $.ajax({
         const renderDeps = (object) => {
             return `
             <div class="container" id="department${object['id']}">
-                <div class="row justify-content-between">
+                <div class="row justify-content-between" id="forLocation">
                     <div class="col-8-sm ml-2">
                         <h3 class="h3 w-100">${object['departmentName']}</h3>
                     </div>
@@ -495,11 +494,7 @@ $.ajax({
                         <label for="depLocation" class="ml-2">Location</label>
                         <select name="depLocation" id="depLocation${object['id']}" class="form-control ml-2 pl-0">
                             <option class="active">${object['locationName']}</option>
-                            <option value="1">London</option>
-                            <option value="2">New York</option>
-                            <option value="3">Paris</option>
-                            <option value="4">Munich</option>
-                            <option value="5">Rome</option>
+                            
                         </select>
                     </div>
                     <div class="col-2-sm">
@@ -548,11 +543,7 @@ $.ajax({
                                                 <input name="newHod" id="newHod" class="form-control"/>
                                                 <label for="newLocation">Location</label>
                                                 <select name="newLocation" id="newLocation" class="form-control pl-0">
-                                                    <option value="1">London</option>
-                                                    <option value="2">New York</option>
-                                                    <option value="3">Paris</option>
-                                                    <option value="4">Munich</option>
-                                                    <option value="5">Rome</option>
+                                                    
                                                 </select>
                                             </form>
                                             <div class="row justify-content-around">
@@ -590,13 +581,12 @@ $.ajax({
                          respond['data'].forEach(obj=> {
                             $(`#department${obj['id']} #delDep${obj['id']}`).on('click', ()=> {
                                 let ifNotZero = $(`#department${obj['id']} #memberCount${obj['id']}`).html()
-                                console.log(ifNotZero, obj['id'])
                                 if (ifNotZero > 0) {
                                     alert('Cannot delete department with active employees!')
                                     $(`#department${obj['id']} #deleteDepartment${obj['id']}`).modal('hide')
                                 } else {
                                     $.ajax({
-                                        url: 'php/deleteDepartmentByID.php',
+                                        url: 'php/deleteDepartmentById.php',
                                         type: 'post',
                                         data: {
                                             id: obj['id']
@@ -683,13 +673,160 @@ $.ajax({
                         $(`#department${depsCount['id']} #memberCount${depsCount['id']}`).html(`${howMany}`)
                         howMany = 0
                     })
+
+                    // get all locations
+
+                    const getLocations = () => {
+                        $.ajax({
+                            url: 'php/getAllLocations.php',
+                            type: 'get',
+                            dataType: 'json',
+                            success: loca=> {
+                                let locaArr = []
+                                loca['data'].forEach(obj=> {
+                                    locaArr.push(`<option value="${obj['id']}">${obj['name']}</option>`)
+                                })
+                                $(`#newLocation`).html(`${locaArr}`)
+                                respond['data'].forEach(obj=> {
+                                    $(`#department${obj['id']} #depLocation${obj['id']}`).html(`${locaArr}`)
+                                })
+                            }
+                        })
+                    }
+
+                    getLocations()
+
                 }
-            })
-            
+            }) 
         })
 
-    }    
-       
+        // Show all locations
+
+        const renderLocations = (object) => {
+            return `
+            <div class="container" id="location${object['id']}">
+                <div class="row justify-content-between">
+                    <div class="col-4-sm">
+                        <h3 class="h3 m-2">${object['name']}</h4>           
+                    </div>  
+                    <div class="col-4-sm">
+                        <h5 class="h5" id="depCount">Departments</h5>
+                    </div>
+                    <div class="col-4-sm">
+                        <button type="button" class="btn" data-toggle="modal" data-target="#delLocModal${object['id']}"><span><i class="fa fa-trash-o fa-2x"></i></span></button>
+                    </div>
+                    <div class="modal fade" id="delLocModal${object['id']}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h4 class="h4">Do you really want to delete location?</h4>
+                                    <div class="row justify-content-around">
+                                        <button type="button" class="btn btn-success" id="delLocation${object['id']}">Yes</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>                       
+                </div>
+            </div>`
+        }
+
+        $(`#onLocation`).on('click', ()=> {
+
+            $.ajax({
+                url: 'php/getAllLocations.php',
+                type: 'get',
+                dataType: 'json',
+                success: locs=> {
+                    locArr = []
+                    locs['data'].forEach(obj=> {
+                        locArr.push(renderLocations(obj))
+                    })
+                    $(`#main`).html(`
+                        <div class="container" style="border: none;">
+                            <div class="row">
+                                <button type="button" class="btn btn-success my-2" data-toggle="modal" data-target="#addLocation">Add New Location</button>
+                            </div>
+                            <div class="modal fade" id="addLocation">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Add New Location</h3>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body form-inline justify-content-around">
+                                            <form class="form-group">
+                                            <label for="newLocName">Location</label>
+                                            <input name="newLocName" id="newLocName" class="form-control mx-2"/>
+                                            <button type="button" class="btn btn-success" id="submitNewLoc">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ${locArr}`)
+
+                    // create new location
+
+                    $(`#submitNewLoc`).on('click', ()=> {
+                        const newLocName = $(`#newLocName`).val();
+                        if (!newLocName) {
+                            alert(`Enter location name!`) 
+                        } else {
+                            $.ajax({
+                                url: 'php/insertLocation.php',
+                                type: 'post',
+                                data: {name: newLocName},
+                                dataType: 'json',
+                                success: locResponse=> {
+                                    if (locResponse['status']['code'] == '200') {
+                                        alert('Location created successfuly!')
+                                        window.location.reload()
+                                    } else {
+                                        alert(`Failed to create new locations`)
+                                    }
+                                }
+                            })
+                        }
+                    })
+                    
+                    // delete location
+                    locs['data'].forEach(obj=> {    
+                        let counter = 0                    
+                        $(`#location${obj['id']} #delLocation${obj['id']}`).on('click', ()=> {
+                            response['data'].forEach(checkName=> {
+                                if (obj['name'] == checkName['location']) {
+                                    counter++
+                                }
+                            })
+                            console.log(counter)
+                            if (counter > 0) {
+                                alert(`Can not delete location with active employees!`)
+                            } else {
+                                const locId = obj['id']
+                                $.ajax({
+                                    url: 'php/delLocation.php',
+                                    type: 'post',
+                                    data: {id: locId},
+                                    dataType: 'json',
+                                    success: delLoc=> {
+                                        if (delLoc['status']['code'] == '200') {
+                                            alert(`Record deleted successfuly`)
+                                            window.location.reload()
+                                        } else {
+                                            alert(`Failed to delete record`)
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    })
+                }
+            })                        
+        })
+    }       
 })
 
 

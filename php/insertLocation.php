@@ -28,10 +28,8 @@
 	}	
 
 	$name = $_POST['name'];
-	$hod = $_POST['hod'];
-	$locationID = $_POST['locationID'];
 
-	$query = "INSERT INTO department (name, hod, locationID) VALUES('$name', '$hod', '$locationID')";
+	$query = "INSERT INTO location (name) VALUES('$name')";
 
 	$result = $conn->query($query);
 	
@@ -40,7 +38,7 @@
 		$output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
 		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
+		$output['data'] = [$conn->insert_id];
 
 		mysqli_close($conn);
 

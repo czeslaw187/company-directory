@@ -34,6 +34,9 @@
             <li class="dropdown-item">
                 <a href="#" role="button" class="btn" id="onManage">Manage Departments</a>
             </li>
+            <li class="dropdown-item">
+                <a href="#" role="button" class="btn" id="onLocation">Manage Locations</a>
+            </li>
         </ul>    
     </div>
   </div>

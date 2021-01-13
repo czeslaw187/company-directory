@@ -29,7 +29,7 @@
 
 	}	
 
-	$query = 'SELECT id, name FROM location';
+	$query = 'SELECT l.id, l.name FROM location l';
 
 	$result = $conn->query($query);
 	
