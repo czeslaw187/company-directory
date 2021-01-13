@@ -512,7 +512,7 @@ $.ajax({
                 </form>
             </div>`
         }
-        
+        // create new department
         $(`#onManage`).on('click', ()=> {
             $.ajax({
                 url: 'php/getAllDepartments.php',
