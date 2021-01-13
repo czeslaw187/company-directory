@@ -706,13 +706,10 @@ $.ajax({
             return `
             <div class="container" id="location${object['id']}">
                 <div class="row justify-content-between">
-                    <div class="col-4-sm">
+                    <div class="col-6-sm">
                         <h3 class="h3 m-2">${object['name']}</h4>           
-                    </div>  
-                    <div class="col-4-sm">
-                        <h5 class="h5" id="depCount">Departments</h5>
                     </div>
-                    <div class="col-4-sm">
+                    <div class="col-6-sm">
                         <button type="button" class="btn" data-toggle="modal" data-target="#delLocModal${object['id']}"><span><i class="fa fa-trash-o fa-2x"></i></span></button>
                     </div>
                     <div class="modal fade" id="delLocModal${object['id']}">
