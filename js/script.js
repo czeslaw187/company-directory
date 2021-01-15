@@ -2,13 +2,12 @@ $('#noButton').on('click', ()=> {
     $('#removeRecord').fadeOut()
 })
 
-
 //single employee
 const getEmp = (object, index) => {
-   return `<div class="container m-2" id="person${index}">
+   return `<div class="container my-2" id="person${object['data'][index]['id']}">
                     <div class="row">
                         <div class="col-sm-1 p-0">
-                            <img src="${object['data'][index]['imgUrl'] ? object['data'][index]['imgUrl'] : ''}" alt="" class="img" id="img" style="width: 90px; heigth: 115px;"/>
+                            <img src="${object['data'][index]['imgUrl'] ? object['data'][index]['imgUrl'] : ''}" alt="" class="img" id="img${object['data'][index]['id']}" style="width: 90px; heigth: 115px;"/>
                         </div>
                         <div class="col-sm-6">
                             <h4>${object['data'][index]['firstName']} ${object['data'][index]['lastName']}</h4>
@@ -21,21 +20,15 @@ const getEmp = (object, index) => {
                             <p class="my-0">${object['data'][index]['location']}</p>
                         </div>
                         <div class="col-sm-1">
-                            <button type="button" data-toggle="collapse" data-target="#dropdown${index}" class="btn"><span><i class="fa fa-sort-desc fa-3x"></i></span></button>
+                            <button type="button" data-toggle="collapse" data-target="#dropdown${object['data'][index]['id']}" class="btn"><span><i class="fa fa-sort-desc fa-3x"></i></span></button>
                         </div>
                     </div>
-                    <div class="row collapse" id="dropdown${index}">
+                    <div class="row collapse" id="dropdown${object['data'][index]['id']}">
                         <div class="col-sm-6">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     <label for="title" class="mr-2">Title</label>
-                                    <select name="title" id="title" class="form-control">
-                                        <option value="mr">Mr</option>
-                                        <option value="mrs">Mrs</option>
-                                        <option value="miss">Miss</option>
-                                        <option value="sir">Sir</option>
-                                        <option value="dr">Dr</option>
-                                    </select>
+                                    <input type="text" name="title" id="title" class="form-control" value="${object['data'][index]['title'] ? object['data'][index]['title'] : ''}" />
                                 </li>
                                 <li class="list-group-item">
                                     <label for="firstName" class="mr-2">First Name</label>
@@ -76,9 +69,10 @@ const getEmp = (object, index) => {
                                 <li class="list-group-item">
                                 <form method="post" action="" enctype="multipart/form-data" id="myform" class="form-group">  
                                     <label for="file">Picture</label>
-                                        <div>
-                                            <input type="file" id="file" name="file" /> 
-                                            <input type="button" class="btn btn-primary" value="Upload" id="but_upload" /> 
+                                    <input type="file" id="file${object['data'][index]['id']}" name="file" />
+                                        <div>                                             
+                                            <input type="button" class="btn btn-primary" value="Upload" id="but_upload${object['data'][index]['id']}" /> 
+                                            <input type="button" class="btn btn-primary" value="Delete" id="but_del${object['data'][index]['id']}" />
                                         </div>
                                 </form> 
                                 </li>
@@ -134,12 +128,12 @@ const getEmp = (object, index) => {
                                 <i class="fa fa-pencil-square-o"></i>
                             </span>
                             </button>
-                            <button type="button" class="btn" data-toggle="modal" data-target="#removeRecord${index}">
+                            <button type="button" class="btn" data-toggle="modal" data-target="#removeRecord${object['data'][index]['id']}">
                                 <span>
                                     <i class="fa fa-trash-o"></i>
                                 </span>
                             </button>                           
-                            <div id="removeRecord${index}" class="modal fade" role="dialog">
+                            <div id="removeRecord${object['data'][index]['id']}" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-body text-center">
@@ -167,17 +161,17 @@ $.ajax({
         
         for (let i = 0; i < response['data'].length; i++) { 
             let count = i
-            rows += getEmp(response, count)                
+            rows.push(getEmp(response, count))                
         }
         
         const renderInMain = object => {
             $('#main').html(`
             <div class="container" style="border: none;">
                 <div class="row">
-                    <button type="button" class="btn btn-md btn-success my-2" id="addEmployeeBtn" data-toggle="modal" data-target="#employeeForm">Create New Employee</button>
+                    <button type="button" class="btn btn-md btn-success my-2" id="addEmployeeBtn" data-toggle="modal" data-target="#employeeForm">Add New Employee</button>
                 </div>
             </div>
-            ${object}
+            ${object.join(' ')}
         `);
         }
         renderInMain(rows)
@@ -433,39 +427,73 @@ $.ajax({
         
         const loadFiles = () => {
             for (let i = 0; i < response['data'].length; i++) {
-                $(`#person${i} #but_upload`).click(() => { 
+                $(`#person${response['data'][i]['id']} #but_upload${response['data'][i]['id']}`).click(() => { 
                     let fd = new FormData(); 
-                    let files = $(`#person${i} #file`)[0].files[0]; 
-                    let id = response['data'][i]['id']
-                    fd.append('id', JSON.stringify(id))
-                    fd.append('file', files); 
-                    $.ajax({ 
-                        url: 'php/fileUpload.php', 
-                        type: 'post', 
-                        data: fd, 
-                        contentType: false, 
-                        processData: false, 
-                        success: respond => { 
-                            if(respond != 0){ 
-                               alert('file uploaded'); 
-                               let imgUrl = respond['data'].replace('../', './')
-                               $(`#person${i} #img`).prop('src', imgUrl)
-                            } 
-                            else{ 
-                                alert('file not uploaded'); 
-                            } 
-                        }, 
-                    }); 
+                    let files = $(`#person${response['data'][i]['id']} #file${response['data'][i]['id']}`)[0].files[0]; 
+                    if (!files) {
+                        alert('Choose file first!')
+                    } else {
+                        let id = response['data'][i]['id']
+                        fd.append('id', JSON.stringify(id))
+                        fd.append('file', files); 
+                        $.ajax({ 
+                            url: 'php/fileUpload.php', 
+                            type: 'post', 
+                            data: fd, 
+                            contentType: false, 
+                            processData: false, 
+                            success: respond => { 
+                                if(respond != 0){ 
+                                alert('file uploaded'); 
+                                let imgUrl = respond['data'].replace('../', './')
+                                $(`#person${response['data'][i]['id']} #img${response['data'][i]['id']}`).prop('src', imgUrl)
+                                } 
+                                else{ 
+                                    alert('file not uploaded'); 
+                                } 
+                            }, 
+                        });
+                    }
                 });
             }
         }
         loadFiles()
 
+        // delete file
+
+        const deleteFile = () => {
+            response['data'].forEach(file=> {
+                $(`#person${file['id']} #but_del${file['id']}`).on('click', ()=> {
+                    let url1 = file['imgUrl']
+                    if (!url1) {
+                        alert(`No file uploaded`)
+                    } else {
+                        const fileId = file['id']
+                        const fileUrl = url1.replace('./', '../')
+                        $.ajax({
+                            url: 'php/fileDelete.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: {url: fileUrl, id: fileId},
+                            success: ifDeleted=> {
+                                if (ifDeleted['status']['code'] == '200' && ifDeleted['status']['file'] == 'ok') {
+                                    alert('File deleted')
+                                    $(`#person${file['id']} #img${file['id']}`).prop('src', '')
+                                } else {
+                                    alert('Error! Failed trying to delete.')
+                                }
+                            }
+                        })
+                    }
+                })
+            })
+        }
+        deleteFile()
         // render list of departments
 
         const renderDeps = (object) => {
             return `
-            <div class="container" id="department${object['id']}">
+            <div class="container my-2" id="department${object['id']}">
                 <div class="row justify-content-between" id="forLocation">
                     <div class="col-8-sm ml-2">
                         <h3 class="h3 w-100">${object['departmentName']}</h3>
@@ -487,6 +515,8 @@ $.ajax({
                 </div>
                 <form class="row collapse justify-content-between" id="updateDep${object['id']}">
                     <div class="col-10-sm form-group">
+                        <label for="depName" class="ml-2">Department Name</label>
+                        <input name="depName" id="depName${object['id']}" class="form-control ml-2 pl-0" value="${object['departmentName'] ? object['departmentName'] : ''}" />
                         <label for="hodName" class="ml-2">Head of Department</label>
                         <input name="hodName" id="hodName${object['id']}" class="form-control ml-2" value="${object['hod'] ? object['hod'] : ''}" />
                         <label for="memberCount" class="ml-2">Members</label>
@@ -512,7 +542,7 @@ $.ajax({
                 </form>
             </div>`
         }
-        // create new department
+        
         $(`#onManage`).on('click', ()=> {
             $.ajax({
                 url: 'php/getAllDepartments.php',
@@ -527,7 +557,7 @@ $.ajax({
                     $(`#main`).html(`
                     <div class="container" style="border: none;">
                         <div class="row">
-                            <button type="button" class="btn btn-md btn-success my-2" id="createNewDep" data-toggle="modal" data-target="#newDepartment">Create New Department</button>
+                            <button type="button" class="btn btn-md btn-success my-2" id="createNewDep" data-toggle="modal" data-target="#newDepartment">Add New Department</button>
                             <div class="modal fade" id="newDepartment" role="dialog">
                                 <div class="modal-dialog modal-md">
                                     <div class="modal-content">
@@ -556,7 +586,7 @@ $.ajax({
                             </div>
                         </div>
                     </div>
-                    ${newDeps}
+                    ${newDeps.join(' ')}
                     `)
 
                     // disable enable input and button on edit
@@ -573,7 +603,6 @@ $.ajax({
                             $(`#department${obj['id']} input, #department${obj['id']} select`).prop('disabled', true)
                             $(`#department${obj['id']} #submitDep${obj['id']}`).hide()
                             $(`#department${obj['id']} #cancelSubmitDep${obj['id']}`).hide()
-                            $(`#department${obj['id']} input`).val('')
                         })                        
                     })
                         
@@ -586,7 +615,7 @@ $.ajax({
                                     $(`#department${obj['id']} #deleteDepartment${obj['id']}`).modal('hide')
                                 } else {
                                     $.ajax({
-                                        url: 'php/deleteDepartmentByID.php',
+                                        url: 'php/deleteDepartmentById.php',
                                         type: 'post',
                                         data: {
                                             id: obj['id']
@@ -610,11 +639,13 @@ $.ajax({
                         respond['data'].forEach(obj=> {
                             $(`#department${obj['id']} #submitDep${obj['id']}`).on('click', ()=> {
                                 const hod = $(`#department${obj['id']} #hodName${obj['id']}`).val(),
-                                      location = $(`#department${obj['id']} #depLocation${obj['id']}`).val();
+                                      location = $(`#department${obj['id']} #depLocation${obj['id']}`).val(),
+                                      departmentName = $(`#department${obj['id']} #depName${obj['id']}`).val();
                                 $.ajax({
                                     url: 'php/updateDepartment.php',
                                     type: 'post',
                                     data: {
+                                        name: departmentName,
                                         hod: hod,
                                         location: location,
                                         id: obj['id'],
@@ -704,23 +735,25 @@ $.ajax({
 
         const renderLocations = (object) => {
             return `
-            <div class="container" id="location${object['id']}">
+            <div class="container my-2" id="location${object['id']}">
                 <div class="row justify-content-between">
                     <div class="col-6-sm">
-                        <h3 class="h3 m-2">${object['name']}</h4>           
+                        <h3 class="h3 m-2">${object['name']}</h4>
+                        <input type="text" name="changeLocName" id="changeLocName${object['id']}" class="form-control m-2" />           
                     </div>
                     <div class="col-6-sm">
+                        <button type="button" class="btn btn-success" id="updateLocation${object['id']}">Submit</button>
+                        <button type="button" class="btn btn-danger" id="cancelLocation${object['id']}">Cancel</button>
+                        <button type="button" class="btn" id="editLocation${object['id']}"><span><i class="fa fa-pencil-square-o fa-2x"></i></span></button> 
                         <button type="button" class="btn" data-toggle="modal" data-target="#delLocModal${object['id']}"><span><i class="fa fa-trash-o fa-2x"></i></span></button>
                     </div>
                     <div class="modal fade" id="delLocModal${object['id']}">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-body">
-                                    <h4 class="h4">Do you really want to delete location?</h4>
-                                    <div class="row justify-content-around">
-                                        <button type="button" class="btn btn-success" id="delLocation${object['id']}">Yes</button>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                                    </div> 
+                                <div class="modal-body text-center">
+                                <h4 class="h4">Do you really want to delete location ?</h4>
+                                    <button type="button" class="btn btn-success" id="delLocation${object['id']}">Yes</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                                 </div>
                             </div>
                         </div>
@@ -763,7 +796,24 @@ $.ajax({
                                 </div>
                             </div>
                         </div>
-                    ${locArr}`)
+                    ${locArr.join(' ')}`)
+                    //disable buttons and input in location
+
+                    locs['data'].forEach(obj=> {
+                        $(`#location${obj['id']} input`).prop('disabled', true)
+                        $(`#location${obj['id']} #updateLocation${obj['id']}`).hide()
+                        $(`#location${obj['id']} #cancelLocation${obj['id']}`).hide()
+                        $(`#location${obj['id']} #editLocation${obj['id']}`).on('click', ()=> {
+                            $(`#location${obj['id']} input`).prop('disabled', false).prop('placeholder', 'type location new name...')
+                            $(`#location${obj['id']} #updateLocation${obj['id']}`).show()
+                            $(`#location${obj['id']} #cancelLocation${obj['id']}`).show()
+                        })
+                        $(`#location${obj['id']} #cancelLocation${obj['id']}`).on('click', ()=> {
+                            $(`#location${obj['id']} input`).prop('disabled', true).prop('placeholder', '').val('')
+                            $(`#location${obj['id']} #updateLocation${obj['id']}`).hide()
+                            $(`#location${obj['id']} #cancelLocation${obj['id']}`).hide()
+                        })
+                    })
 
                     // create new location
 
@@ -789,6 +839,33 @@ $.ajax({
                         }
                     })
                     
+                    // update location
+
+                    locs['data'].forEach(obj=> {
+                        $(`#location${obj['id']} #updateLocation${obj['id']}`).on('click', ()=> {
+                            const id = obj['id']
+                            const locName = $(`#location${obj['id']} #changeLocName${obj['id']}`).val()
+                            if (!locName) {
+                                alert(`Enter location name`)
+                            } else {
+                                $.ajax({
+                                    url: 'php/updateLocation.php',
+                                    type: 'post',
+                                    dataType: 'json',
+                                    data: {id: id, name: locName},
+                                    success: updated=> {
+                                        if (updated['status']['code'] == '200') {
+                                            alert('Location name updated')
+                                            window.location.reload()
+                                        } else {
+                                            alert(`Failed trying to update location name!`)
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    })
+
                     // delete location
                     locs['data'].forEach(obj=> {    
                         let counter = 0                    
@@ -804,7 +881,7 @@ $.ajax({
                             } else {
                                 const locId = obj['id']
                                 $.ajax({
-                                    url: 'php/delLocation.php',
+                                    url: 'php/deleteLocation.php',
                                     type: 'post',
                                     data: {id: locId},
                                     dataType: 'json',

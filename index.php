@@ -7,6 +7,7 @@
     <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
     <link rel="stylesheet" href="./vendors/bootstrap-4.5.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./vendors/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./vendors/jquery-ui-1.12.1/jquery-ui.css">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
@@ -155,6 +156,7 @@
 
 
 <script src="./vendors/jquery/jquery-3.5.1.js"></script>
+<script src="./vendors/jquery-ui-1.12.1/jquery-ui.js"></script>
 <script src="./vendors/bootstrap-4.5.3-dist/js/bootstrap.bundle.js"></script>    
 <script src="./js/script.js"></script>
 </body>

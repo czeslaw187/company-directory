@@ -26,11 +26,9 @@ ini_set('display_errors', 'On');
 
 	}	
     $name = $_POST['name'];
-    $hod = $_POST['hod'];
-    $locationID = $_POST['location'];
     $id = $_POST['id'];
 
-	$query = "UPDATE department d SET d.name='$name', d.hod='$hod', d.locationID='$locationID' WHERE d.id='$id'";
+	$query = "UPDATE location l SET name='$name' WHERE id='$id'";
 
 	$result = $conn->query($query);
 	
