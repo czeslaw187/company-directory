@@ -64,13 +64,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 <label for="titleNew" class="mr-2">Title</label>
-                                <select name="titleNew" id="titleNew" class="form-control">
-                                    <option value="mr">Mr</option>
-                                    <option value="mrs">Mrs</option>
-                                    <option value="miss">Miss</option>
-                                    <option value="sir">Sir</option>
-                                    <option value="dr">Dr</option>
-                                </select>
+                                <input type="text" name="titleNew" id="titleNew" class="form-control">
                             </li>
                             <li class="list-group-item">
                                 <label for="firstNameNew" class="mr-2">First name</label>

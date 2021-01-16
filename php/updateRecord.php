@@ -43,6 +43,7 @@ $phone = $_POST['phone'];
 $salary = $_POST['salary'];
 $startDate = $_POST['startDate'];
 $endDate = $_POST['endDate'];
+$isActive = $_POST['isActive'];
 $workHistory = $_POST['workHistory'];
 
 $query = "UPDATE personnel
@@ -60,7 +61,8 @@ $query = "UPDATE personnel
               personnel.phone = '$phone',
               personnel.salary = '$salary',
               personnel.hire_date = '$startDate',
-              personnel.end_date = '$endDate',              
+              personnel.end_date = '$endDate',
+              personnel.isActive = '$isActive',              
               personnel.work_history = '$workHistory'        
           WHERE personnel.id = '$id'";
 $result = $conn->query($query);

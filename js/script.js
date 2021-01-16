@@ -106,6 +106,10 @@ const getEmp = (object, index) => {
                                     <label for="endOfEmployment" class="mr-2">End of Employment</label>
                                     <input type="text" name="endOfEmployment" id="endOfEmployment" class="form-control" value="${object['data'][index]['end_date'] ? object['data'][index]['end_date'] : ''}"/>
                                 </li>
+                                <li class="list-group-item"> 
+                                    <label for="ifActive">Active employee</label>
+                                    <input type="checkbox" name="ifActive" id="ifActive" />
+                                </li>
                                 <li class="list-group-item">
                                     <label for="location" class="mr-2">Location</label>
                                     <p id="location" name="location">${object['data'][index]['location'] ? object['data'][index]['location'] : ''}</p>
@@ -158,10 +162,10 @@ $.ajax({
     type: 'get',
     dataType: 'json',
     success: response => {    
-        
+        console.log(response['data'])
         for (let i = 0; i < response['data'].length; i++) { 
             let count = i
-            rows.push(getEmp(response, count))                
+            rows.push(getEmp(response, count))             
         }
         
         const renderInMain = object => {
@@ -193,6 +197,9 @@ $.ajax({
                     $(`#person${response['data'][i]['id']} #saveCredentials`).hide()
                     $(`#person${response['data'][i]['id']} #department`).html(`<option value="${response['data'][i]['departmentID']}">${response['data'][i]['department']}</option>`)
                 })
+                if (response['data'][i]['isActive'] == 'true') {
+                    $(`#person${response['data'][i]['id']} #ifActive`).prop('checked', true)
+                }
             }
         }
         enableEdit()
@@ -352,6 +359,7 @@ $.ajax({
                     salary = $(`#person${response['data'][i]['id']} #salary`).val(),
                     startDate = $(`#person${response['data'][i]['id']} #startDate`).val(),
                     endDate = $(`#person${response['data'][i]['id']} #endOfEmployment`).val(),
+                    isActiveEmp = $(`#person${response['data'][i]['id']} #ifActive`).is(`:checked`),
                     workHistory = $(`#person${response['data'][i]['id']} #workHistory`).val();
                     $.ajax({
                         url: 'php/updateRecord.php',
@@ -374,11 +382,12 @@ $.ajax({
                             salary: salary,
                             startDate: startDate,
                             endDate: endDate,
+                            isActive: isActiveEmp,
                             workHistory: workHistory
                         },
                         dataType: 'json',
-                        success: response=> {
-                            if (response['status']['name'] == 'ok') {
+                        success: updateEmp=> {
+                            if (updateEmp['status']['name'] == 'ok') {
                                 alert('Record updated')
                                 $(`#person${response['data'][i]['id']} input, #person${response['data'][i]['id']} select, #person${response['data'][i]['id']} textarea`).prop('disabled', true)
                                 $(`#person${response['data'][i]['id']} #cancelSave`).hide()
@@ -398,8 +407,9 @@ $.ajax({
         const deleteRecord = (response) => {
             for (let i = 0; i < response['data'].length; i++) {
                 $(`#person${response['data'][i]['id']} #deleteRecord`).on('click', ()=> {
-                    const endDate = $(`#person${response['data'][i]['id']} #endOfEmployment`).val()
-                    if (endDate.toLowerCase() === 'active') {
+                    const isActive = $(`#person${response['data'][i]['id']} #ifActive`).is(`:checked`)
+                    console.log(isActive)
+                    if (isActive === true) {
                         alert('Cannot delete active employee!')
                     } else {
                         $.ajax({
@@ -442,10 +452,10 @@ $.ajax({
                             data: fd, 
                             contentType: false, 
                             processData: false, 
-                            success: respond => { 
-                                if(respond != 0){ 
+                            success: theUrl => { 
+                                if(theUrl != 0){ 
                                 alert('file uploaded'); 
-                                let imgUrl = respond['data'].replace('../', './')
+                                let imgUrl = theUrl['data'].replace('../', './')
                                 $(`#person${response['data'][i]['id']} #img${response['data'][i]['id']}`).prop('src', imgUrl)
                                 } 
                                 else{ 
@@ -464,27 +474,22 @@ $.ajax({
         const deleteFile = () => {
             response['data'].forEach(file=> {
                 $(`#person${file['id']} #but_del${file['id']}`).on('click', ()=> {
-                    let url1 = file['imgUrl']
-                    if (!url1) {
-                        alert(`No file uploaded`)
-                    } else {
-                        const fileId = file['id']
-                        const fileUrl = url1.replace('./', '../')
-                        $.ajax({
-                            url: 'php/fileDelete.php',
-                            type: 'post',
-                            dataType: 'json',
-                            data: {url: fileUrl, id: fileId},
-                            success: ifDeleted=> {
-                                if (ifDeleted['status']['code'] == '200' && ifDeleted['status']['file'] == 'ok') {
-                                    alert('File deleted')
-                                    $(`#person${file['id']} #img${file['id']}`).prop('src', '')
-                                } else {
-                                    alert('Error! Failed trying to delete.')
-                                }
+                    const fileId = file['id']
+                    const fileUrl = file['imgUrl'].replace('./', '../')
+                    $.ajax({
+                        url: 'php/fileDelete.php',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {url: fileUrl, id: fileId},
+                        success: ifDeleted=> {
+                            if (ifDeleted['status']['code'] == '200' && ifDeleted['status']['file'] == 'ok') {
+                                alert('File deleted')
+                                $(`#person${file['id']} #img${file['id']}`).prop('src', '')
+                            } else {
+                                alert('Error! Failed trying to delete.')
                             }
-                        })
-                    }
+                        }
+                    })
                 })
             })
         }
@@ -523,7 +528,7 @@ $.ajax({
                         <p name="memberCount" class="ml-2" id="memberCount${object['id']}"></p>
                         <label for="depLocation" class="ml-2">Location</label>
                         <select name="depLocation" id="depLocation${object['id']}" class="form-control ml-2 pl-0">
-                            <option class="active">${object['locationName']}</option>
+                            <option class="active" value="${object['id']}">${object['locationName']}</option>
                             
                         </select>
                     </div>
@@ -717,7 +722,7 @@ $.ajax({
                                 })
                                 $(`#newLocation`).html(`${locaArr}`)
                                 respond['data'].forEach(obj=> {
-                                    $(`#department${obj['id']} #depLocation${obj['id']}`).html(`${locaArr}`)
+                                    $(`#department${obj['id']} #depLocation${obj['id']}`).append(`${locaArr}`)
                                 })
                             }
                         })
