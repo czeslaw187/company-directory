@@ -178,20 +178,20 @@ $.ajax({
         // enable editing data
         const enableEdit = () => {
             for (let i = 0; i < response['data'].length; i++) {
-                $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
-                $(`#person${i} #cancelSave`).hide()
-                $(`#person${i} #saveCredentials`).hide()
-                $(`#person${i} #enableFields`).click(()=> {
-                    $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', false)
-                    $(`#person${i} #cancelSave`).show()
-                    $(`#person${i} #saveCredentials`).show()
+                $(`#person${response['data'][i]['id']} input, #person${response['data'][i]['id']} select, #person${response['data'][i]['id']} textarea`).prop('disabled', true)
+                $(`#person${response['data'][i]['id']} #cancelSave`).hide()
+                $(`#person${response['data'][i]['id']} #saveCredentials`).hide()
+                $(`#person${response['data'][i]['id']} #enableFields`).click(()=> {
+                    $(`#person${response['data'][i]['id']} input, #person${response['data'][i]['id']} select, #person${response['data'][i]['id']} textarea`).prop('disabled', false)
+                    $(`#person${response['data'][i]['id']} #cancelSave`).show()
+                    $(`#person${response['data'][i]['id']} #saveCredentials`).show()
                     getDepartments()
                 })
-                $(`#person${i} #cancelSave`).click(()=> {
-                    $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
-                    $(`#person${i} #cancelSave`).hide()
-                    $(`#person${i} #saveCredentials`).hide()
-                    $(`#person${i} #department`).html(`<option value="${response['data'][i]['departmentID']}">${response['data'][i]['department']}</option>`)
+                $(`#person${response['data'][i]['id']} #cancelSave`).click(()=> {
+                    $(`#person${response['data'][i]['id']} input, #person${response['data'][i]['id']} select, #person${response['data'][i]['id']} textarea`).prop('disabled', true)
+                    $(`#person${response['data'][i]['id']} #cancelSave`).hide()
+                    $(`#person${response['data'][i]['id']} #saveCredentials`).hide()
+                    $(`#person${response['data'][i]['id']} #department`).html(`<option value="${response['data'][i]['departmentID']}">${response['data'][i]['department']}</option>`)
                 })
             }
         }
@@ -205,14 +205,14 @@ $.ajax({
             if (name[1]) {
                 for (let i = 0; i < response['data'].length; i++) {
                     if (response['data'][i]['firstName'].toLowerCase() === name[0] && response['data'][i]['lastName'].toLowerCase() === name[1]) {
-                        $(`#person${i}`).get(0).scrollIntoView()
+                        $(`#person${response['data'][i]['id']}`).get(0).scrollIntoView()
                         break
                     }
                 }
             } else {
                 for (let i = 0; i < response['data'].length; i++) {
                     if (response['data'][i]['email'].toLowerCase() === name[0].toLowerCase()) {
-                        $(`#person${i}`).get(0).scrollIntoView()
+                        $(`#person${response['data'][i]['id']}`).get(0).scrollIntoView()
                         break
                     } 
                 }
@@ -235,7 +235,7 @@ $.ajax({
                         options.push(`<option value="${departments['data'][i]['id']}">${departments['data'][i]['departmentName']}</option>`)
                     }        
                     for (let i = 0; i < response['data'].length; i++) {
-                        $(`#person${i} #department`).html(`${options}`)
+                        $(`#person${response['data'][i]['id']} #department`).html(`${options}`)
                     }
                     $('#employeeForm #departmentNew').html(`${options}`)                               
                 }
@@ -334,25 +334,25 @@ $.ajax({
 
         const updateNewEmployee = (response) => {
             for (let i = 0; i < response['data'].length; i++) {
-                $(`#person${i} #saveCredentials`).on('click', ()=> {
-                const title = $(`#person${i} #title`).val(),
+                $(`#person${response['data'][i]['id']} #saveCredentials`).on('click', ()=> {
+                const title = $(`#person${response['data'][i]['id']} #title`).val(),
                     id = response['data'][i]['id'],  
-                    firstName = $(`#person${i} #firstName`).val(),
-                    lastName = $(`#person${i} #lastName`).val(),
-                    dob = $(`#person${i} #dob`).val(),
-                    address1 = $(`#person${i} #address1`).val(),
-                    address2 = $(`#person${i} #address2`).val(),
-                    postCode = $(`#person${i} #postCode`).val(),
-                    city = $(`#person${i} #city`).val(),
-                    email = $(`#person${i} #email`).val(),
-                    phone = $(`#person${i} #phone`).val(),
-                    position = $(`#person${i} #position`).val(),
-                    department = $(`#person${i} #department`).val(),
-                    hod = $(`#person${i} #hod`).val(),
-                    salary = $(`#person${i} #salary`).val(),
-                    startDate = $(`#person${i} #startDate`).val(),
-                    endDate = $(`#person${i} #endOfEmployment`).val(),
-                    workHistory = $(`#person${i} #workHistory`).val();
+                    firstName = $(`#person${response['data'][i]['id']} #firstName`).val(),
+                    lastName = $(`#person${response['data'][i]['id']} #lastName`).val(),
+                    dob = $(`#person${response['data'][i]['id']} #dob`).val(),
+                    address1 = $(`#person${response['data'][i]['id']} #address1`).val(),
+                    address2 = $(`#person${response['data'][i]['id']} #address2`).val(),
+                    postCode = $(`#person${response['data'][i]['id']} #postCode`).val(),
+                    city = $(`#person${response['data'][i]['id']} #city`).val(),
+                    email = $(`#person${response['data'][i]['id']} #email`).val(),
+                    phone = $(`#person${response['data'][i]['id']} #phone`).val(),
+                    position = $(`#person${response['data'][i]['id']} #position`).val(),
+                    department = $(`#person${response['data'][i]['id']} #department`).val(),
+                    hod = $(`#person${response['data'][i]['id']} #hod`).val(),
+                    salary = $(`#person${response['data'][i]['id']} #salary`).val(),
+                    startDate = $(`#person${response['data'][i]['id']} #startDate`).val(),
+                    endDate = $(`#person${response['data'][i]['id']} #endOfEmployment`).val(),
+                    workHistory = $(`#person${response['data'][i]['id']} #workHistory`).val();
                     $.ajax({
                         url: 'php/updateRecord.php',
                         method: 'post',
@@ -380,9 +380,9 @@ $.ajax({
                         success: response=> {
                             if (response['status']['name'] == 'ok') {
                                 alert('Record updated')
-                                $(`#person${i} input, #person${i} select, #person${i} textarea`).prop('disabled', true)
-                                $(`#person${i} #cancelSave`).hide()
-                                $(`#person${i} #saveCredentials`).hide()
+                                $(`#person${response['data'][i]['id']} input, #person${response['data'][i]['id']} select, #person${response['data'][i]['id']} textarea`).prop('disabled', true)
+                                $(`#person${response['data'][i]['id']} #cancelSave`).hide()
+                                $(`#person${response['data'][i]['id']} #saveCredentials`).hide()
                                 window.location.reload()
                             } else {
                                 alert(`Server Error`)
@@ -397,8 +397,8 @@ $.ajax({
 
         const deleteRecord = (response) => {
             for (let i = 0; i < response['data'].length; i++) {
-                $(`#person${i} #deleteRecord`).on('click', ()=> {
-                    const endDate = $(`#person${i} #endOfEmployment`).val()
+                $(`#person${response['data'][i]['id']} #deleteRecord`).on('click', ()=> {
+                    const endDate = $(`#person${response['data'][i]['id']} #endOfEmployment`).val()
                     if (endDate.toLowerCase() === 'active') {
                         alert('Cannot delete active employee!')
                     } else {
@@ -549,6 +549,7 @@ $.ajax({
                 type: 'get',
                 dataType: 'json',
                 success: respond => {
+                    console.log(respond['data'])
                     let newDeps = []
                     respond['data'].forEach(obj=> {
                     newDeps.push(renderDeps(obj))
@@ -609,28 +610,25 @@ $.ajax({
                          // delete department
                          respond['data'].forEach(obj=> {
                             $(`#department${obj['id']} #delDep${obj['id']}`).on('click', ()=> {
-                                let ifNotZero = $(`#department${obj['id']} #memberCount${obj['id']}`).html()
-                                if (ifNotZero > 0) {
-                                    alert('Cannot delete department with active employees!')
-                                    $(`#department${obj['id']} #deleteDepartment${obj['id']}`).modal('hide')
-                                } else {
-                                    $.ajax({
-                                        url: 'php/deleteDepartmentById.php',
-                                        type: 'post',
-                                        data: {
-                                            id: obj['id']
-                                        },
-                                        dataType: 'json',
-                                        success: ifDel=> {
-                                            if (ifDel['status']['code'] == '200') {
-                                                alert('Record deleted')
-                                                window.location.reload()
-                                            } else {
-                                                alert('Could not delete record!')
-                                            }
+                                $.ajax({
+                                    url: 'php/deleteDepartmentById.php',
+                                    type: 'post',
+                                    data: {
+                                        id: obj['id'],
+                                        name: obj['departmentName']
+                                    },
+                                    dataType: 'json',
+                                    success: ifDel=> {
+                                        if (ifDel['status']['code'] == '200') {
+                                            alert(`Department deleted!`)
+                                            window.location.reload()
+                                        } else if (ifDel['data'] == 'has_active') {
+                                            alert('Could not delete department with active employees')
+                                        } else {
+                                            alert('Server error. Failed to delete record!')
                                         }
-                                    })
-                                }
+                                    }
+                                })
                             })
                         })    
                         
@@ -867,34 +865,26 @@ $.ajax({
                     })
 
                     // delete location
-                    locs['data'].forEach(obj=> {    
-                        let counter = 0                    
+                    locs['data'].forEach(obj=> {                        
                         $(`#location${obj['id']} #delLocation${obj['id']}`).on('click', ()=> {
-                            response['data'].forEach(checkName=> {
-                                if (obj['name'] == checkName['location']) {
-                                    counter++
-                                }
-                            })
-                            console.log(counter)
-                            if (counter > 0) {
-                                alert(`Can not delete location with active employees!`)
-                            } else {
-                                const locId = obj['id']
+                            const locId = obj['id'],
+                                  locName = obj['name']
                                 $.ajax({
-                                    url: 'php/deleteLocation.php',
+                                    url: 'php/deleteLocationByID.php',
                                     type: 'post',
-                                    data: {id: locId},
+                                    data: {id: locId, name: locName},
                                     dataType: 'json',
                                     success: delLoc=> {
                                         if (delLoc['status']['code'] == '200') {
-                                            alert(`Record deleted successfuly`)
+                                            alert(`Location deleted successfuly`)
                                             window.location.reload()
+                                        } else if (delLoc['data'] == 'has_active') {
+                                            alert(`Can not delete location with active employees!`)
                                         } else {
-                                            alert(`Failed to delete record`)
+                                            alert(`Server Error! Failed to delete location.`)
                                         }
                                     }
                                 })
-                            }
                         })
                     })
                 }

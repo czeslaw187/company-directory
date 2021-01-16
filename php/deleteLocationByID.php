@@ -30,7 +30,7 @@
 	$name = $_POST['name'];
 	$id = $_POST['id'];
 
-	$query = "SELECT COUNT(*) as count FROM personnel LEFT JOIN department ON personnel.departmentID = department.id WHERE department.name='$name'"; 
+	$query = "SELECT COUNT(*) as count FROM personnel p LEFT JOIN department d ON p.departmentID = d.id LEFT JOIN location l ON d.locationID = l.id WHERE l.name = '$name'"; 
 
 	$result = $conn->query($query);
 
@@ -65,7 +65,7 @@
 		exit;
 
 	} else {
-		$query = 'DELETE FROM department WHERE id = ' . $_POST['id'];
+		$query = 'DELETE FROM location WHERE id = ' . $_POST['id'];
 
 		$result = $conn->query($query);
 		
