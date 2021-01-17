@@ -53,4 +53,7 @@ input#file-upload-button {
     }
  }
 
- 
+ .errMsg, .depErr, .locErr {
+     color: red;
+     font-weight: bold;
+ }

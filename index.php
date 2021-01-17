@@ -69,11 +69,11 @@
                                 <input type="text" name="titleNew" id="titleNew" class="form-control">
                             </li>
                             <li class="list-group-item">
-                                <label for="firstNameNew" class="mr-2">First name</label>
+                                <label for="firstNameNew" class="mr-2">First name <sup>*</sup></label>
                                 <input type="text" name="firstNameNew" id="firstNameNew" class="form-control" />
                             </li>
                             <li class="list-group-item">
-                                <label for="lastNameNew">Last name</label>
+                                <label for="lastNameNew">Last name <sup>*</sup></label>
                                 <input type="text" name="lastNameNew" id="lastNameNew" class="form-control">
                             </li>
                             <li class="list-group-item">
@@ -97,7 +97,7 @@
                                 <input type="text" name="cityNew" id="cityNew" class="form-control">
                             </li>
                             <li class="list-group-item">
-                                <label for="EmailNew">Email</label>
+                                <label for="EmailNew">Email <sup>*</sup></label>
                                 <input type="email" name="emailNew" id="emailNew" class="form-control">
                             </li>
                             <li class="list-group-item">
