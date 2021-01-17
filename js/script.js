@@ -641,7 +641,7 @@ $.ajax({
                          respond['data'].forEach(obj=> {
                             $(`#department${obj['id']} #delDep${obj['id']}`).on('click', ()=> {
                                 $.ajax({
-                                    url: 'php/deleteDepartmentById.php',
+                                    url: 'php/deleteDepartmentByID.php',
                                     type: 'post',
                                     data: {
                                         id: obj['id'],
