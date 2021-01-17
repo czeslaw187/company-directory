@@ -652,6 +652,7 @@ $.ajax({
                                         if (ifDel['status']['code'] == '200') {
                                             renderErr(`Department deleted!`)
                                             setTimeout(()=> {window.location.reload()},3000)
+                                            $(`#deleteDepartment${obj['id']}`).modal('hide')
                                         } else if (ifDel['data'] == 'has_active') {
                                             renderErr('Could not delete department with active employees')
                                             $(`#deleteDepartment${obj['id']}`).modal('hide')
