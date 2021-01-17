@@ -44,9 +44,10 @@
 </nav>
 <!-- Main content-->
   
-
-<main id="main" class="container border-0 h-100 overflow-auto">
-   
+<div class="w-100 text-center">
+ <span id="errMsg"></span>
+</div>
+<main id="main" class="container border-0 h-100 overflow-auto">   
 </main>
 
 <!-- New employee form -->
@@ -61,6 +62,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-6">
+                        <span id="employeeErr"></span>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 <label for="titleNew" class="mr-2">Title</label>

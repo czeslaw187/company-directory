@@ -2,6 +2,26 @@ $('#noButton').on('click', ()=> {
     $('#removeRecord').fadeOut()
 })
 
+const renderErr = (msg) => {
+    setTimeout(()=> {$(`#errMsg`).html('')}, 3000)
+    $(`#errMsg`).html(msg)
+}
+
+const renderErr2 = (msg) => {
+    setTimeout(()=> {$(`#employeeErr`).html('')}, 3000)
+    $(`#employeeErr`).html(msg)
+}
+
+const renderErr3 = (msg) => {
+    setTimeout(()=> {$(`#depErr`).html('')}, 3000)
+    $(`#depErr`).html(msg)
+}
+
+const renderErr4 = (msg) => {
+    setTimeout(()=> {$(`#locErr`).html('')}, 3000)
+    $(`#locErr`).html(msg)
+}
+
 //single employee
 const getEmp = (object, index) => {
    return `<div class="container my-2" id="person${object['data'][index]['id']}">
@@ -291,15 +311,15 @@ $.ajax({
                       endDate = $('#endOfEmploymentNew').val(),
                       workHistory = $('#workHistoryNew').val();   
                 if (!firstName) {
-                alert('Enter first name')
+                renderErr2('Enter first name')
                 } else if (!lastName) {
-                    alert('Enter last name')
+                    renderErr2('Enter last name')
                 } else if (!email) {              
-                    alert('Enter a valid email')
+                    renderErr2('Enter a valid email')
                 } else if (!dob) {
-                    alert('Enter valid date of birth')            
+                    renderErr2('Enter valid date of birth')            
                 } else if (!department) {
-                    alert('Enter valid department')            
+                    renderErr2('Enter valid department')            
                 } else {
                     $.ajax({
                         url: 'php/insertNewEmployee.php',
@@ -326,10 +346,12 @@ $.ajax({
                         dataType: 'json',
                         success: newEmployee=> {
                             if (newEmployee['status']['name'] == 'ok') {
-                                alert(`Record created`)
-                                window.location.reload()               
+                                $(`#employeeForm`).modal('hide')
+                                renderErr2(`Record created`)                                 
+                                setTimeout(()=> {window.location.reload()},3000)                                              
                             } else {
-                                alert(`Server Error`)
+                                $(`#employeeForm`).modal('hide')
+                                renderErr2(`Server Error`)
                             }
                         }
                     })
@@ -388,13 +410,13 @@ $.ajax({
                         dataType: 'json',
                         success: updateEmp=> {
                             if (updateEmp['status']['name'] == 'ok') {
-                                alert('Record updated')
+                                renderErr('Record updated')
                                 $(`#person${response['data'][i]['id']} input, #person${response['data'][i]['id']} select, #person${response['data'][i]['id']} textarea`).prop('disabled', true)
                                 $(`#person${response['data'][i]['id']} #cancelSave`).hide()
                                 $(`#person${response['data'][i]['id']} #saveCredentials`).hide()
-                                window.location.reload()
+                                setTimeout(()=> {window.location.reload()},3000)
                             } else {
-                                alert(`Server Error`)
+                                renderErr(`Server Error`)
                             }
                         }
                     })
@@ -410,7 +432,7 @@ $.ajax({
                     const isActive = $(`#person${response['data'][i]['id']} #ifActive`).is(`:checked`)
                     console.log(isActive)
                     if (isActive === true) {
-                        alert('Cannot delete active employee!')
+                        renderErr('Cannot delete active employee!')
                     } else {
                         $.ajax({
                             url: 'php/deleteRecord.php',
@@ -421,10 +443,12 @@ $.ajax({
                             },
                             success: deleted=> {
                                 if (deleted) {
-                                    alert('Record deleted') 
-                                    window.location.reload()                           
+                                    $(`#person${response['data'][i]['id']} #removeRecord${response['data'][i]['id']}`).modal('hide')
+                                    renderErr('Record deleted') 
+                                    setTimeout(()=> {window.location.reload()},3000)                           
                                 } else {
-                                    alert('Server Error')
+                                    $(`#person${response['data'][i]['id']} #removeRecord${response['data'][i]['id']}`).modal('hide')
+                                    renderErr('Server Error')
                                 }
                             }
                         })
@@ -441,7 +465,7 @@ $.ajax({
                     let fd = new FormData(); 
                     let files = $(`#person${response['data'][i]['id']} #file${response['data'][i]['id']}`)[0].files[0]; 
                     if (!files) {
-                        alert('Choose file first!')
+                        renderErr('Choose file first!')
                     } else {
                         let id = response['data'][i]['id']
                         fd.append('id', JSON.stringify(id))
@@ -454,12 +478,12 @@ $.ajax({
                             processData: false, 
                             success: theUrl => { 
                                 if(theUrl != 0){ 
-                                alert('file uploaded'); 
+                                renderErr('file uploaded'); 
                                 let imgUrl = theUrl['data'].replace('../', './')
                                 $(`#person${response['data'][i]['id']} #img${response['data'][i]['id']}`).prop('src', imgUrl)
                                 } 
                                 else{ 
-                                    alert('file not uploaded'); 
+                                    renderErr('file not uploaded'); 
                                 } 
                             }, 
                         });
@@ -483,10 +507,10 @@ $.ajax({
                         data: {url: fileUrl, id: fileId},
                         success: ifDeleted=> {
                             if (ifDeleted['status']['code'] == '200' && ifDeleted['status']['file'] == 'ok') {
-                                alert('File deleted')
+                                renderErr('File deleted')
                                 $(`#person${file['id']} #img${file['id']}`).prop('src', '')
                             } else {
-                                alert('Error! Failed trying to delete.')
+                                renderErr('Error! Failed trying to delete.')
                             }
                         }
                     })
@@ -572,6 +596,7 @@ $.ajax({
                                             <button class="close" data-dismiss="modal">&times;</button>
                                         </div>
                                         <div class="modal-body">
+                                        <span id="depErr"></span>
                                             <form class="form-group">
                                                 <label for="depName">Department Name</label>
                                                 <input name="depName" id="depName" class="form-control"/>
@@ -625,12 +650,14 @@ $.ajax({
                                     dataType: 'json',
                                     success: ifDel=> {
                                         if (ifDel['status']['code'] == '200') {
-                                            alert(`Department deleted!`)
-                                            window.location.reload()
+                                            renderErr(`Department deleted!`)
+                                            setTimeout(()=> {window.location.reload()},3000)
                                         } else if (ifDel['data'] == 'has_active') {
-                                            alert('Could not delete department with active employees')
+                                            renderErr('Could not delete department with active employees')
+                                            $(`#deleteDepartment${obj['id']}`).modal('hide')
                                         } else {
-                                            alert('Server error. Failed to delete record!')
+                                            renderErr('Server error. Failed to delete record!')
+                                            $(`#deleteDepartment${obj['id']}`).modal('hide')
                                         }
                                     }
                                 })
@@ -656,10 +683,10 @@ $.ajax({
                                     dataType: 'json',
                                     success: updated=> {
                                         if (updated['status']['code'] == '200') {
-                                            alert('Record updated')
-                                            window.location.reload()
+                                            renderErr('Department updated')
+                                            setTimeout(()=> {window.location.reload()},3000)
                                         } else {
-                                            alert('Failed to upload record')
+                                            renderErr('Failed to update department')
                                         }
                                     }
                                 })      
@@ -673,7 +700,7 @@ $.ajax({
                                   newHod = $(`#newHod`).val(),
                                   location = $(`#newLocation`).val();
                                   if (!departmentName) {
-                                      alert(`Enter department name`)
+                                      renderErr3(`Enter department name`)
                                   } else {
                                     $.ajax({
                                         url: 'php/insertDepartment.php',
@@ -686,10 +713,12 @@ $.ajax({
                                         dataType: 'json',
                                         success: newObj=> {
                                             if (newObj['status']['code'] == '200') {
-                                                alert('New department created')
-                                                window.location.reload()
+                                                renderErr3('New department created')
+                                                $(`#newDepartment${obj['id']}`).modal('hide')
+                                                setTimeout(()=> {window.location.reload()},3000)
                                             } else {
-                                                alert('Failed to create new record!')
+                                                renderErr3('Failed to create new record!')
+                                                $(`#newDepartment${obj['id']}`).modal('hide')
                                             }
                                         }
                                     })
@@ -789,6 +818,7 @@ $.ajax({
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
                                         <div class="modal-body form-inline justify-content-around">
+                                        <span id="locErr"></span>
                                             <form class="form-group">
                                             <label for="newLocName">Location</label>
                                             <input name="newLocName" id="newLocName" class="form-control mx-2"/>
@@ -823,7 +853,7 @@ $.ajax({
                     $(`#submitNewLoc`).on('click', ()=> {
                         const newLocName = $(`#newLocName`).val();
                         if (!newLocName) {
-                            alert(`Enter location name!`) 
+                            renderErr4(`Enter location name!`) 
                         } else {
                             $.ajax({
                                 url: 'php/insertLocation.php',
@@ -832,10 +862,10 @@ $.ajax({
                                 dataType: 'json',
                                 success: locResponse=> {
                                     if (locResponse['status']['code'] == '200') {
-                                        alert('Location created successfuly!')
-                                        window.location.reload()
+                                        renderErr4('Location created successfuly!')
+                                        setTimeout(()=> {window.location.reload()}, 3000)
                                     } else {
-                                        alert(`Failed to create new locations`)
+                                        renderErr4(`Failed to create new locations`)
                                     }
                                 }
                             })
@@ -849,7 +879,7 @@ $.ajax({
                             const id = obj['id']
                             const locName = $(`#location${obj['id']} #changeLocName${obj['id']}`).val()
                             if (!locName) {
-                                alert(`Enter location name`)
+                                renderErr(`Enter location name`)
                             } else {
                                 $.ajax({
                                     url: 'php/updateLocation.php',
@@ -858,10 +888,10 @@ $.ajax({
                                     data: {id: id, name: locName},
                                     success: updated=> {
                                         if (updated['status']['code'] == '200') {
-                                            alert('Location name updated')
-                                            window.location.reload()
+                                            renderErr('Location name updated')
+                                            setTimeout(()=> {window.location.reload()}, 3000)
                                         } else {
-                                            alert(`Failed trying to update location name!`)
+                                            renderErr(`Failed trying to update location name!`)
                                         }
                                     }
                                 })
@@ -881,12 +911,13 @@ $.ajax({
                                     dataType: 'json',
                                     success: delLoc=> {
                                         if (delLoc['status']['code'] == '200') {
-                                            alert(`Location deleted successfuly`)
-                                            window.location.reload()
+                                            $(`#delLocModal${obj['id']}`).modal('hide')
+                                            renderErr(`Location deleted successfuly`)
+                                            setTimeout(()=> {window.location.reload()}, 3000)
                                         } else if (delLoc['data'] == 'has_active') {
-                                            alert(`Can not delete location with active employees!`)
+                                            renderErr(`Can not delete location with active employees!`)
                                         } else {
-                                            alert(`Server Error! Failed to delete location.`)
+                                            renderErr(`Server Error! Failed to delete location.`)
                                         }
                                     }
                                 })
