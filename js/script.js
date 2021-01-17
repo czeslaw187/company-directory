@@ -915,8 +915,10 @@ $.ajax({
                                             renderErr(`Location deleted successfuly`)
                                             setTimeout(()=> {window.location.reload()}, 3000)
                                         } else if (delLoc['data'] == 'has_active') {
+                                            $(`#delLocModal${obj['id']}`).modal('hide')
                                             renderErr(`Can not delete location with active employees!`)
                                         } else {
+                                            $(`#delLocModal${obj['id']}`).modal('hide')
                                             renderErr(`Server Error! Failed to delete location.`)
                                         }
                                     }
