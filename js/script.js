@@ -181,8 +181,7 @@ $.ajax({
     url: 'php/getAll.php',
     type: 'get',
     dataType: 'json',
-    success: response => {    
-        console.log(response['data'])
+    success: response => {
         for (let i = 0; i < response['data'].length; i++) { 
             let count = i
             rows.push(getEmp(response, count))             
