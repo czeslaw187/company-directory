@@ -714,11 +714,11 @@ $.ajax({
                                         success: newObj=> {
                                             if (newObj['status']['code'] == '200') {
                                                 renderErr3('New department created')
-                                                $(`#newDepartment${obj['id']}`).modal('hide')
+                                                $(`#newDepartment`).modal('hide')
                                                 setTimeout(()=> {window.location.reload()},3000)
                                             } else {
                                                 renderErr3('Failed to create new record!')
-                                                $(`#newDepartment${obj['id']}`).modal('hide')
+                                                $(`#newDepartment`).modal('hide')
                                             }
                                         }
                                     })
