@@ -430,7 +430,6 @@ $.ajax({
             for (let i = 0; i < response['data'].length; i++) {
                 $(`#person${response['data'][i]['id']} #deleteRecord`).on('click', ()=> {
                     const isActive = $(`#person${response['data'][i]['id']} #ifActive`).is(`:checked`)
-                    console.log(isActive)
                     if (isActive === true) {
                         renderErr('Cannot delete active employee!')
                         $(`#removeRecord${response['data'][i]['id']}`).modal('hide')
@@ -579,7 +578,6 @@ $.ajax({
                 type: 'get',
                 dataType: 'json',
                 success: respond => {
-                    console.log(respond['data'])
                     let newDeps = []
                     respond['data'].forEach(obj=> {
                     newDeps.push(renderDeps(obj))
