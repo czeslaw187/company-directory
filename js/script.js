@@ -347,11 +347,11 @@ $.ajax({
                         success: newEmployee=> {
                             if (newEmployee['status']['name'] == 'ok') {
                                 $(`#employeeForm`).modal('hide')
-                                renderErr2(`Record created`)                                 
+                                renderErr(`Record created`)                                 
                                 setTimeout(()=> {window.location.reload()},3000)                                              
                             } else {
                                 $(`#employeeForm`).modal('hide')
-                                renderErr2(`Server Error`)
+                                renderErr2(`Server Error! Cannot create new employee!`)
                             }
                         }
                     })
