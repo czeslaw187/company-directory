@@ -433,6 +433,7 @@ $.ajax({
                     console.log(isActive)
                     if (isActive === true) {
                         renderErr('Cannot delete active employee!')
+                        $(`#removeRecord${response['data'][i]['id']}`).modal('hide')
                     } else {
                         $.ajax({
                             url: 'php/deleteRecord.php',
