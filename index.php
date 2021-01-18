@@ -113,7 +113,7 @@
                                 <input type="text" name="positionNew" id="positionNew" class="form-control">
                             </li>
                             <li class="list-group-item">
-                                <label for="departmentNew">Department</label>
+                                <label for="departmentNew">Department <sup>*</sup></label>
                                 <select name="departmentNew" id="departmentNew" class="form-control">
                                     <option value=""></option>
                                 </select>    
