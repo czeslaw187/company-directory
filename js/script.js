@@ -315,8 +315,6 @@ $.ajax({
                     renderErr2('Enter last name')
                 } else if (!email) {              
                     renderErr2('Enter a valid email')
-                } else if (!dob) {
-                    renderErr2('Enter valid date of birth')            
                 } else if (!department) {
                     renderErr2('Enter valid department')            
                 } else {

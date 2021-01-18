@@ -115,7 +115,7 @@
                             <li class="list-group-item">
                                 <label for="departmentNew">Department</label>
                                 <select name="departmentNew" id="departmentNew" class="form-control">
-
+                                    <option value=""></option>
                                 </select>    
                             </li>
                             <li class="list-group-item">
