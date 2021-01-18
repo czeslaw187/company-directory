@@ -3,22 +3,18 @@ $('#noButton').on('click', ()=> {
 })
 
 const renderErr = (msg) => {
-    setTimeout(()=> {$(`#errMsg`).html('')}, 3000)
     $(`#errMsg`).html(msg)
 }
 
 const renderErr2 = (msg) => {
-    setTimeout(()=> {$(`#employeeErr`).html('')}, 3000)
     $(`#employeeErr`).html(msg)
 }
 
 const renderErr3 = (msg) => {
-    setTimeout(()=> {$(`#depErr`).html('')}, 3000)
     $(`#depErr`).html(msg)
 }
 
 const renderErr4 = (msg) => {
-    setTimeout(()=> {$(`#locErr`).html('')}, 3000)
     $(`#locErr`).html(msg)
 }
 
@@ -594,13 +590,13 @@ $.ajax({
                                         <div class="modal-body">
                                         <span id="depErr"></span>
                                             <form class="form-group">
-                                                <label for="depName">Department Name</label>
+                                                <label for="depName">Department Name <sup>*</sup></label>
                                                 <input name="depName" id="depName" class="form-control"/>
                                                 <label for="newHod">Head of Department</label>
                                                 <input name="newHod" id="newHod" class="form-control"/>
-                                                <label for="newLocation">Location</label>
+                                                <label for="newLocation">Location <sup>*</sup></label>
                                                 <select name="newLocation" id="newLocation" class="form-control pl-0">
-                                                    
+                                                    <option value=""></option>
                                                 </select>
                                             </form>
                                             <div class="row justify-content-around">
@@ -645,16 +641,16 @@ $.ajax({
                                     },
                                     dataType: 'json',
                                     success: ifDel=> {
-                                        if (ifDel['status']['code'] == '200') {
+                                        if (ifDel['status']['code'] == '200') {                                            
+                                            $(`#deleteDepartment${obj['id']}`).modal('hide')
                                             renderErr(`Department deleted!`)
                                             setTimeout(()=> {window.location.reload()},3000)
-                                            $(`#deleteDepartment${obj['id']}`).modal('hide')
                                         } else if (ifDel['data'] == 'has_active') {
+                                            $(`#deleteDepartment${obj['id']}`).modal('hide')
                                             renderErr('Could not delete department with active employees')
-                                            $(`#deleteDepartment${obj['id']}`).modal('hide')
                                         } else {
-                                            renderErr('Server error. Failed to delete record!')
                                             $(`#deleteDepartment${obj['id']}`).modal('hide')
+                                            renderErr('Server error. Failed to delete record!')                                            
                                         }
                                     }
                                 })
