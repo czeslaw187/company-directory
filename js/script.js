@@ -3,19 +3,19 @@ $('#noButton').on('click', ()=> {
 })
 
 const renderErr = (msg) => {
-    $(`#errMsg`).slideDown('fast').html(msg)
+    $(`#errMsg`).html(msg)
 }
 
 const renderErr2 = (msg) => {
-    $(`#employeeErr`).html(msg).slideDown('fast')
+    $(`#employeeErr`).html(msg)
 }
 
 const renderErr3 = (msg) => {
-    $(`#depErr`).html(msg).slideDown('fast')
+    $(`#depErr`).html(msg)
 }
 
 const renderErr4 = (msg) => {
-    $(`#locErr`).html(msg).slideDown('fast')
+    $(`#locErr`).html(msg)
 }
 
 //single employee
