@@ -77,6 +77,10 @@
                                 <input type="text" name="lastNameNew" id="lastNameNew" class="form-control">
                             </li>
                             <li class="list-group-item">
+                                <label for="EmailNew">Email <sup>*</sup></label>
+                                <input type="email" name="emailNew" id="emailNew" class="form-control">
+                            </li>
+                            <li class="list-group-item">
                                 <label for="dobNew">Date of birth</label>
                                 <input type="text" name="dobNew" id="dobNew" class="form-control">
                             </li>
@@ -95,10 +99,6 @@
                             <li class="list-group-item">
                                 <label for="dobNew">City</label>
                                 <input type="text" name="cityNew" id="cityNew" class="form-control">
-                            </li>
-                            <li class="list-group-item">
-                                <label for="EmailNew">Email <sup>*</sup></label>
-                                <input type="email" name="emailNew" id="emailNew" class="form-control">
                             </li>
                             <li class="list-group-item">
                                 <label for="phone">Phone</label>
