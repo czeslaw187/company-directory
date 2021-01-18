@@ -59,6 +59,10 @@ const getEmp = (object, index) => {
                                     <input type="text" name="lastName" id="lastName" class="form-control" value="${object['data'][index]['lastName']}"/>
                                 </li>
                                 <li class="list-group-item">
+                                    <label for="email" class="mr-2">Email</label>
+                                    <input type="text" name="email" id="email" class="form-control" value="${object['data'][index]['email'] ? object['data'][index]['email'] : ''}"/>
+                                </li>
+                                <li class="list-group-item">
                                     <label for="dob" class="mr-2">Date of birth</label>
                                     <input type="text" name="dob" id="dob" class="form-control" value="${object['data'][index]['dob'] ? object['data'][index]['dob'] : ''}"/>
                                 </li>
@@ -77,10 +81,6 @@ const getEmp = (object, index) => {
                                 <li class="list-group-item">
                                     <label for="city" class="mr-2">City</label>
                                     <input type="text" name="city" id="city" class="form-control" value="${object['data'][index]['city'] ? object['data'][index]['city'] : ''}"/>
-                                </li>
-                                <li class="list-group-item">
-                                    <label for="email" class="mr-2">Email</label>
-                                    <input type="text" name="email" id="email" class="form-control" value="${object['data'][index]['email'] ? object['data'][index]['email'] : ''}"/>
                                 </li>
                                 <li class="list-group-item">
                                     <label for="phone" class="mr-2">Phone</label>
