@@ -261,9 +261,9 @@ $.ajax({
                         options.push(`<option value="${departments['data'][i]['id']}">${departments['data'][i]['departmentName']}</option>`)
                     }        
                     for (let i = 0; i < response['data'].length; i++) {
-                        $(`#person${response['data'][i]['id']} #department`).html(`${options}`)
+                        $(`#person${response['data'][i]['id']} #department`).append(`${options}`)
                     }
-                    $('#employeeForm #departmentNew').html(`${options}`)                               
+                    $('#employeeForm #departmentNew').append(`${options}`)                               
                 }
             })
         }
