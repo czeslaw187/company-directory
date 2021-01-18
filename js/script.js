@@ -741,7 +741,7 @@ $.ajax({
                                 loca['data'].forEach(obj=> {
                                     locaArr.push(`<option value="${obj['id']}">${obj['name']}</option>`)
                                 })
-                                $(`#newLocation`).html(`${locaArr}`)
+                                $(`#newLocation`).append(`${locaArr}`)
                                 respond['data'].forEach(obj=> {
                                     $(`#department${obj['id']} #depLocation${obj['id']}`).append(`${locaArr}`)
                                 })
