@@ -694,6 +694,8 @@ $.ajax({
                                   location = $(`#newLocation`).val();
                                   if (!departmentName) {
                                       renderErr3(`Enter department name`)
+                                  } else if (!location) {
+                                      renderErr3(`Enter available location`)  
                                   } else {
                                     $.ajax({
                                         url: 'php/insertDepartment.php',
