@@ -3,7 +3,7 @@ $('#noButton').on('click', ()=> {
 })
 
 const renderErr = (msg) => {
-    $(`#errMsg`).html(msg).slideDown('fast')
+    $(`#errMsg`).slideDown('fast').html(msg)
 }
 
 const renderErr2 = (msg) => {
