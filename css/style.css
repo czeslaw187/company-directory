@@ -63,6 +63,6 @@ input#file-upload-button {
 }
 
 .top-button {
-    position: sticky;
-    background-color: white;
+    position: sticky !important;
+    background-color: white !important;
 }
