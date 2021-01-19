@@ -586,7 +586,9 @@ $.ajax({
 
                     $(`#buttonHead`).html(`
                         <div class="container" style="border: none;">
-                            <button type="button" class="btn btn-md btn-success my-2" id="createNewDep" data-toggle="modal" data-target="#newDepartment">Add New Department</button>
+                            <div class="row">
+                                <button type="button" class="btn btn-md btn-success my-2" id="createNewDep" data-toggle="modal" data-target="#newDepartment">Add New Department</button>
+                            </div>
                         </div>
                     `)
 
