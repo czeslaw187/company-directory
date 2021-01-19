@@ -55,7 +55,7 @@
 <div class="modal fade" id="employeeForm" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header sticky-top">
                 <h4 class="modal-title">Add new employee</h4>
                 <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
             </div>
