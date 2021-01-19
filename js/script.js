@@ -580,6 +580,12 @@ $.ajax({
                     newDeps.push(renderDeps(obj))
                     })
                     
+                    $(`buttonHead`).html(`
+                        <div class="container" style="border: none;">
+                            <button type="button" class="btn btn-md btn-success my-2" id="createNewDep" data-toggle="modal" data-target="#newDepartment">Add New Department</button>
+                        </div>
+                    `)
+
                     $(`#main`).html(`
                     <div class="container" style="border: none;">
                         <div class="row">
@@ -614,11 +620,7 @@ $.ajax({
                     </div>
                     ${newDeps.join(' ')}
                     `)
-                    $(`buttonHead`).html(`
-                        <div class="container" style="border: none;">
-                            <button type="button" class="btn btn-md btn-success my-2" id="createNewDep" data-toggle="modal" data-target="#newDepartment">Add New Department</button>
-                        </div>
-                    `)
+                    
                     // disable enable input and button on edit
                     respond['data'].forEach(obj=> {
                         $(`#department${obj['id']} input, #department${obj['id']} select`).prop('disabled', true)
