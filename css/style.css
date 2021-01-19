@@ -61,3 +61,8 @@ input#file-upload-button {
 .dropdown-menu.show {
     z-index: 9999 !important;
 }
+
+.top-button {
+    position: sticky;
+    background-color: white;
+}
