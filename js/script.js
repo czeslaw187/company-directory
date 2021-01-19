@@ -183,13 +183,16 @@ $.ajax({
             rows.push(getEmp(response, count))             
         }
         
-        $(`#buttonHead`).html(`
+        const getEmpButt = () => {
+            $(`#buttonHead`).html(`
             <div class="container" style="border: none;">
                 <div class="row">
                     <button type="button" class="btn btn-md btn-success my-2" id="addEmployeeBtn" data-toggle="modal" data-target="#employeeForm">Add New Employee</button>
                 </div>
             </div>
         `)
+        }
+        gutEmpButt()
 
         const renderInMain = object => {
             $('#main').html(`
@@ -579,7 +582,7 @@ $.ajax({
                     respond['data'].forEach(obj=> {
                     newDeps.push(renderDeps(obj))
                     })
-                    
+
                     $(`#buttonHead`).html(`
                         <div class="container" style="border: none;">
                             <button type="button" class="btn btn-md btn-success my-2" id="createNewDep" data-toggle="modal" data-target="#newDepartment">Add New Department</button>
