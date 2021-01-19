@@ -814,10 +814,19 @@ $.ajax({
                     locs['data'].forEach(obj=> {
                         locArr.push(renderLocations(obj))
                     })
-                    $(`#main`).html(`
+
+                    $(`#buttonHead`).html(`
                         <div class="container" style="border: none;">
                             <div class="row">
                                 <button type="button" class="btn btn-success my-2" data-toggle="modal" data-target="#addLocation">Add New Location</button>
+                            </div>
+                        </div>
+                    `)
+
+                    $(`#main`).html(`
+                        <div class="container" style="border: none;">
+                            <div class="row">
+                                
                             </div>
                             <div class="modal fade" id="addLocation">
                                 <div class="modal-dialog">
