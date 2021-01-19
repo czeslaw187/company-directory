@@ -185,7 +185,7 @@ $.ajax({
         
         const renderInMain = object => {
             $('#main').html(`
-            <div class="container sticky-top" style="border: none;">
+            <div class="container sticky-top bg-white" style="border: none;">
                 <div class="row">
                     <button type="button" class="btn btn-md btn-success my-2" id="addEmployeeBtn" data-toggle="modal" data-target="#employeeForm">Add New Employee</button>
                 </div>
