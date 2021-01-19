@@ -192,7 +192,7 @@ $.ajax({
             </div>
         `)
         }
-        gutEmpButt()
+        getEmpButt()
 
         const renderInMain = object => {
             $('#main').html(`
@@ -289,6 +289,7 @@ $.ajax({
             updateNewEmployee(response)
             deleteRecord(response)
             loadFiles()
+            getEmpButt()
         })
 
         //submit new employee
