@@ -800,7 +800,7 @@ $.ajax({
                         locArr.push(renderLocations(obj))
                     })
                     $(`#main`).html(`
-                        <div class="container bg-white sticky-top" style="border: none;">
+                        <div class="container bg-white sticky-top>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         " style="border: none;">
                             <div class="row">
                                 <button type="button" class="btn btn-success my-2" data-toggle="modal" data-target="#addLocation">Add New Location</button>
                             </div>
