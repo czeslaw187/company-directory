@@ -57,3 +57,7 @@ input#file-upload-button {
      color: red;
      font-weight: bold;
  }
+
+.dropdown-menu .dropdown-menu-right {
+    z-index: 9999 !important;
+}
