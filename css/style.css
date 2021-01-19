@@ -58,6 +58,6 @@ input#file-upload-button {
      font-weight: bold;
  }
 
-.dropdown-menu .dropdown-menu-right {
+.dropdown-menu.show {
     z-index: 9999 !important;
 }
