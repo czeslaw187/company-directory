@@ -183,13 +183,17 @@ $.ajax({
             rows.push(getEmp(response, count))             
         }
         
-        const renderInMain = object => {
-            $('#main').html(`
+        $(`#buttonHead`).html(`
             <div class="container" style="border: none;">
                 <div class="row">
                     <button type="button" class="btn btn-md btn-success my-2" id="addEmployeeBtn" data-toggle="modal" data-target="#employeeForm">Add New Employee</button>
                 </div>
             </div>
+        `)
+
+        const renderInMain = object => {
+            $('#main').html(`
+            
             ${object.join(' ')}
         `);
         }
