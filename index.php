@@ -47,7 +47,7 @@
 <div class="w-100 text-center">
  <span id="errMsg"></span>
 </div>
-<div id="buttonHead"></div>
+<div class="container" id="buttonHead"></div>
 <main id="main" class="container border-0 h-100 overflow-auto">   
 </main>
 
