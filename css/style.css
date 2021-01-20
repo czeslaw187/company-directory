@@ -1,5 +1,5 @@
 body {
-    height: calc(100vh - 95px);
+    height: calc(100vh - 105px);
     overflow: auto;
     width: 100vw;
 }
