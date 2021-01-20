@@ -564,8 +564,8 @@ $.ajax({
                                 <button type="button" class="btn btn-danger m-2" id="cancelSubmitDep${object['id']}">Cancel</button>
                             </div>
                             <div class="col-6-sm d-flex flex-column">
-                                <button type="button" class="btn m-2" id="editDep${object['id']}"><span><i class="fa fa-pencil-square-o"></i></span></button>
-                                <button type="button" class="btn m-2" id="cancelDep${object['id']}" data-toggle="modal" data-target="#deleteDepartment${object['id']}"><span><i class="fa fa-trash-o"></i></span></button>
+                                <button type="button" class="btn m-3" id="editDep${object['id']}"><span><i class="fa fa-pencil-square-o"></i></span></button>
+                                <button type="button" class="btn m-3" id="cancelDep${object['id']}" data-toggle="modal" data-target="#deleteDepartment${object['id']}"><span><i class="fa fa-trash-o"></i></span></button>
                             </div>
                         </div>
                     </div>
